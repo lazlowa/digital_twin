@@ -1,4 +1,4 @@
-# TWIN.md
+# ME.md
 
 Source-of-truth knowledge base for the digital twin of Laszlo Anka. This file is
 the authoritative reference the digital twin LLM uses to answer visitor questions
