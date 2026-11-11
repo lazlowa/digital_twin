@@ -1,0 +1,29 @@
+[project]
+name = "digital-twin"
+version = "0.1.0"
+description = "Digital twin of Laszlo Anka: resume page with an LLM-backed chat."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.4",
+    "pydantic-settings>=2.16.2",
+    "uvicorn>=0.54.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.4",
+]
