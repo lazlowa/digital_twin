@@ -2,7 +2,7 @@
 
 ## Current task
 
-TID-1 (Project scaffold): implemented on branch `tid-1` and waiting for developer review. Not committed.
+None assigned. TID-1 (Project scaffold) is complete, approved by the developer, merged into `main`, and pushed.
 
 ## Completed
 
@@ -33,4 +33,4 @@ None.
 
 ## Next action
 
-The developer reviews TID-1 and decides whether to commit. TID-2 starts only on explicit instruction.
+Wait for the developer to assign the next task (TID-2 per PLAN.md).
