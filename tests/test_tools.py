@@ -55,8 +55,11 @@ def test_transcript_names_speakers() -> None:
     )
 
 
+IP = "203.0.113.7"
+
+
 def test_unknown_question_email(smtp: list[EmailMessage]) -> None:
-    result = tools.record_unknown_question("Favourite dish?", TRANSCRIPT)
+    result = tools.record_unknown_question("Favourite dish?", TRANSCRIPT, IP)
 
     [message] = smtp
     assert result == tools.RECORDED
@@ -68,44 +71,45 @@ def test_unknown_question_email(smtp: list[EmailMessage]) -> None:
     assert TRANSCRIPT in body
 
 
-def test_visitor_contact_email(smtp: list[EmailMessage]) -> None:
-    result = tools.record_visitor_contact(
-        "jane@example.com", TRANSCRIPT, name="Jane Doe", note="A platform role"
-    )
-
-    [message] = smtp
-    assert result == tools.RECORDED
-    assert message["To"] == "owner@example.com"
-    assert message["Subject"] == "Digital twin: new visitor contact"
-    body = message.get_content()
-    assert "Email: jane@example.com" in body
-    assert "Name: Jane Doe" in body
-    assert "Note: A platform role" in body
-    assert TRANSCRIPT in body
-
-
 def test_preview_subject_prefix(
     smtp: list[EmailMessage], monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(settings, "vercel_env", "preview")
 
-    tools.record_unknown_question("Favourite dish?", TRANSCRIPT)
+    tools.record_unknown_question("Favourite dish?", TRANSCRIPT, IP)
 
     assert smtp[0]["Subject"] == "[Preview] Digital twin: unanswered question"
 
 
-def test_run_tool_dispatches_json_arguments(smtp: list[EmailMessage]) -> None:
-    args = '{"email": "jane@example.com"}'
+def test_daily_email_cap_per_ip(smtp: list[EmailMessage]) -> None:
+    cap = settings.max_question_emails_per_day
+    results = [
+        tools.record_unknown_question(f"Question {n}?", TRANSCRIPT, IP)
+        for n in range(cap + 2)
+    ]
 
-    result = asyncio.run(tools.run_tool("record_visitor_contact", args, TRANSCRIPT))
+    assert len(smtp) == cap
+    assert results == [tools.RECORDED] * (cap + 2)
+    tools.record_unknown_question("Other visitor?", TRANSCRIPT, "198.51.100.1")
+    assert len(smtp) == cap + 1
+
+
+def test_run_tool_dispatches_json_arguments(smtp: list[EmailMessage]) -> None:
+    args = '{"question": "Favourite dish?"}'
+
+    result = asyncio.run(
+        tools.run_tool("record_unknown_question", args, TRANSCRIPT, IP)
+    )
 
     assert result == tools.RECORDED
-    assert "Name: -" in smtp[0].get_content()
+    assert "Question:\nFavourite dish?" in smtp[0].get_content()
 
 
 def test_run_tool_rejects_invalid_calls(smtp: list[EmailMessage]) -> None:
-    assert asyncio.run(tools.run_tool("unknown_tool", "{}", "")) == tools.FAILED
-    assert (
-        asyncio.run(tools.run_tool("record_unknown_question", "{", "")) == tools.FAILED
-    )
+    for name, args in [
+        ("record_visitor_contact", '{"email": "jane@example.com"}'),
+        ("record_unknown_question", "{"),
+        ("record_unknown_question", '{"email": "jane@example.com"}'),
+    ]:
+        assert asyncio.run(tools.run_tool(name, args, "", IP)) == tools.FAILED
     assert smtp == []

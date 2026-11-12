@@ -209,9 +209,9 @@ system.
   - Replies stream to the browser as they are generated. The LLM is accessed
     through OpenRouter with the OpenAI SDK, so the model can be changed through
     configuration.
-  - LLM tool calling: the twin records questions it cannot answer and contact
-    details visitors choose to share, and emails them to Laszlo with the
-    conversation transcript. Nothing is stored.
+  - LLM tool calling: the twin records questions it cannot answer and emails
+    them to Laszlo with the conversation transcript, capped per visitor IP and
+    day. Nothing is stored.
   - Abuse and cost protection: limits on message length, history length and
     response tokens, and per-IP rate limiting. The chat API accepts only visitor
     and twin messages, so visitors cannot send their own system instructions.

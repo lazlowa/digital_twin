@@ -151,3 +151,19 @@ Decision: Every Vercel deployment shows a small build badge with the short commi
 Rationale: The developer can see at a glance which commit a deployment runs and whether it is a preview.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-11 | Visitor contact tool removed
+
+Decision: Supersedes "Visitor contact tool and privacy note" (2026-11-12, TID-4). The `record_visitor_contact` tool is removed. When a visitor wants to get in touch or offers contact details, the twin shares the email address from `data/ME.md` and mentions the contact panel, which lists the email address and LinkedIn profile. The twin does not speak for Laszlo about his interest, availability or reaction. The unknown-question tool stays.
+
+Rationale: Developer choice after testing. The email address is already on the page, so collecting visitor contacts adds no value, and Laszlo answers for himself.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-11 | Cap on unanswered-question emails
+
+Decision: Unanswered-question emails are capped per client IP per 24 hours by `MAX_QUESTION_EMAILS_PER_DAY` (default 10), counted in memory with the existing rate limiter. Over the cap the email is skipped silently; the twin still says it does not know and the visitor is not told. A limit of 0 blocks all emails.
+
+Rationale: Prevents abuse of the notification email. In-memory counting is approximate on serverless hosting, which the developer accepted.
+
+Approved by developer: yes

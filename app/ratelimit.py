@@ -37,7 +37,8 @@ class RateLimiter:
         for maximum, window in self.limits:
             start = bisect_right(hits, now - window)
             if len(hits) - start >= maximum:
-                oldest = hits[len(hits) - maximum]
+                # A limit of 0 blocks every request for a full window.
+                oldest = hits[len(hits) - maximum] if maximum else now
                 retry_after = max(retry_after, oldest + window - now)
         if retry_after:
             return retry_after

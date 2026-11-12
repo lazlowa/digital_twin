@@ -1,4 +1,4 @@
-"""Tools offered to the LLM. Each one emails a notification to NOTIFY_TO."""
+"""The tool offered to the LLM: emails unanswered questions to NOTIFY_TO."""
 
 import asyncio
 import json
@@ -7,12 +7,16 @@ import smtplib
 from email.message import EmailMessage
 
 from app.config import settings
+from app.ratelimit import RateLimiter
 
 SMTP_PORT = 465
 RECORDED = "Recorded."
 FAILED = "Recording failed."
+DAY = 86400
 
 logger = logging.getLogger(__name__)
+# Caps notification emails per client IP; approximate on serverless hosting.
+email_limiter = RateLimiter([(settings.max_question_emails_per_day, DAY)])
 
 TOOLS = [
     {
@@ -29,28 +33,6 @@ TOOLS = [
                     "question": {"type": "string", "description": "The question."}
                 },
                 "required": ["question"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "record_visitor_contact",
-            "description": (
-                "Record the contact details a visitor has shared so the person you "
-                "represent can follow up."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "email": {"type": "string", "description": "Visitor's email."},
-                    "name": {"type": "string", "description": "Visitor's name."},
-                    "note": {
-                        "type": "string",
-                        "description": "What the visitor wants to discuss.",
-                    },
-                },
-                "required": ["email"],
             },
         },
     },
@@ -75,35 +57,30 @@ def send_email(subject: str, body: str) -> None:
         smtp.send_message(message)
 
 
-def record_unknown_question(question: str, transcript: str) -> str:
+def record_unknown_question(question: str, transcript: str, client_ip: str) -> str:
+    if email_limiter.hit(client_ip) is not None:
+        # Over the daily cap the email is skipped silently: the twin still says
+        # it doesn't know, and the visitor is not told.
+        logger.warning("Daily question email cap reached; email not sent")
+        return RECORDED
     return _notify(
         "Digital twin: unanswered question",
         f"Question:\n{question}\n\nConversation:\n\n{transcript}\n",
     )
 
 
-def record_visitor_contact(
-    email: str, transcript: str, name: str | None = None, note: str | None = None
-) -> str:
-    return _notify(
-        "Digital twin: new visitor contact",
-        f"Email: {email}\nName: {name or '-'}\nNote: {note or '-'}\n\n"
-        f"Conversation:\n\n{transcript}\n",
-    )
-
-
-async def run_tool(name: str, arguments: str, transcript: str) -> str:
+async def run_tool(name: str, arguments: str, transcript: str, client_ip: str) -> str:
     """Executes a tool call from the model and returns the result for the model."""
-    handlers = {
-        "record_unknown_question": record_unknown_question,
-        "record_visitor_contact": record_visitor_contact,
-    }
     try:
-        handler = handlers[name]
+        if name != "record_unknown_question":
+            raise ValueError("unknown tool")
         return await asyncio.to_thread(
-            handler, transcript=transcript, **json.loads(arguments)
+            record_unknown_question,
+            transcript=transcript,
+            client_ip=client_ip,
+            **json.loads(arguments),
         )
-    except (KeyError, TypeError, ValueError) as error:
+    except (TypeError, ValueError) as error:
         logger.error("Invalid tool call %s(%s): %s", name, arguments, error)
         return FAILED
 

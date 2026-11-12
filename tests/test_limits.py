@@ -108,6 +108,12 @@ def test_rate_limiter_day_window() -> None:
     assert limiter.hit("a") == 86400 - 360
 
 
+def test_rate_limiter_zero_limit_blocks() -> None:
+    limiter = RateLimiter([(0, 60)], Clock())
+
+    assert limiter.hit("a") == 60
+
+
 def test_client_ip_from_proxy_headers_only_when_trusted(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

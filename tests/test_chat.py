@@ -119,7 +119,7 @@ def test_tools_are_offered_on_every_request(sent: list) -> None:
     assert len(fake.requests) == 2
     for request in fake.requests:
         names = [tool["function"]["name"] for tool in request["tools"]]
-        assert names == ["record_unknown_question", "record_visitor_contact"]
+        assert names == ["record_unknown_question"]
 
 
 def test_tool_call_runs_and_result_goes_back_to_model(sent: list) -> None:
@@ -138,6 +138,18 @@ def test_tool_call_runs_and_result_goes_back_to_model(sent: list) -> None:
         "content": tools.RECORDED,
     }
     assert reply == "I don't know."
+
+
+def test_email_cap_skips_email_but_twin_still_answers(
+    sent: list, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(tools, "email_limiter", tools.RateLimiter([(1, tools.DAY)]))
+
+    for _ in range(2):
+        use(FakeClient(unknown_question_rounds()))
+        assert chat_text() == "I don't know."
+
+    assert len(sent) == 1
 
 
 def test_smtp_failure_does_not_break_chat(monkeypatch: pytest.MonkeyPatch) -> None:

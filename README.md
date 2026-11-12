@@ -18,9 +18,11 @@ cp .env.example .env   # then fill in the values
 ## Limits and costs
 
 `POST /api/chat` rejects over-long messages and histories (`422`) and limits
-requests per client IP (`429`). The limits and the maximum response length are
-configurable in `.env` (see `.env.example`). Rate limits are counted in memory
-per server process, so on serverless hosting they are approximate.
+requests per client IP (`429`). Unanswered-question emails are capped per client
+IP per 24 hours (default 10); further questions are not emailed. The limits and
+the maximum response length are configurable in `.env` (see `.env.example`).
+Rate limits and the email cap are counted in memory per server process, so on
+serverless hosting they are approximate.
 
 Set a spending limit for the API key in OpenRouter
 (<https://openrouter.ai/keys>) so that abuse cannot cause unbounded

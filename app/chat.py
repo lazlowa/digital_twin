@@ -7,13 +7,13 @@ from pathlib import Path
 from typing import Annotated, Literal
 
 import openai
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field, model_validator
 
 from app.config import settings
-from app.ratelimit import rate_limit
+from app.ratelimit import client_ip, rate_limit
 from app.tools import TOOLS, format_transcript, run_tool
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -65,16 +65,15 @@ Tool use:
 - Record every question you cannot answer from the document below with
   record_unknown_question, including unrelated questions. Afterwards tell the
   visitor only that you don't know; do not mention that the question was recorded.
-- After you could not answer a question, or when the visitor shows clear interest
-  (for example hiring or a collaboration), you may offer once that the visitor can
-  leave an email address so the person you represent can follow up. Do not push.
-- When the visitor shares an email address, record it with record_visitor_contact,
-  together with their name and topic if they gave them.
-- Record each question and each contact only once per conversation. You cannot
-  see tool calls from earlier turns, only your earlier replies, and those replies
-  are accurate: if you earlier confirmed recording contact details, or said you
-  don't know something, it was already recorded. Do not call the tool again for
-  it; just answer in the chat."""
+- You cannot record or pass on contact details. When the visitor wants to get in
+  touch or offers their own contact details, kindly share the email address from
+  the document below and mention that the contact panel on this page lists the
+  email address and LinkedIn profile. Do not speak for the person you represent
+  about their interest, availability or reaction; they will answer themselves.
+- Record each question only once per conversation. You cannot see tool calls
+  from earlier turns, only your earlier replies, and those replies are accurate:
+  if you earlier said you don't know something, it was already recorded. Do not
+  call the tool again for it; just answer in the chat."""
 
 
 def build_system_prompt() -> str:
@@ -94,7 +93,9 @@ def get_client() -> AsyncOpenAI:
 
 @router.post("/api/chat", dependencies=[Depends(rate_limit)])
 async def chat(
-    request: ChatRequest, client: Annotated[AsyncOpenAI, Depends(get_client)]
+    request: ChatRequest,
+    http_request: Request,
+    client: Annotated[AsyncOpenAI, Depends(get_client)],
 ) -> StreamingResponse:
     history = [message.model_dump() for message in request.messages]
     messages = [{"role": "system", "content": build_system_prompt()}, *history]
@@ -107,7 +108,8 @@ async def chat(
             status_code=502, detail="The assistant is currently unavailable."
         ) from error
 
-    reply = _reply(client, messages, stream, format_transcript(history))
+    transcript = format_transcript(history)
+    reply = _reply(client, messages, stream, transcript, client_ip(http_request))
     # nosniff: browsers otherwise buffer the start of a text/plain response to
     # sniff its type, so short replies would arrive all at once.
     return StreamingResponse(
@@ -128,7 +130,11 @@ async def _complete(client: AsyncOpenAI, messages: list[dict]) -> AsyncIterator:
 
 
 async def _reply(
-    client: AsyncOpenAI, messages: list[dict], stream: AsyncIterator, transcript: str
+    client: AsyncOpenAI,
+    messages: list[dict],
+    stream: AsyncIterator,
+    transcript: str,
+    ip: str,
 ) -> AsyncIterator[str]:
     """Streams text, runs requested tools, and continues until the model is done."""
     for round_ in range(MAX_TOOL_ROUNDS + 1):
@@ -167,7 +173,7 @@ async def _reply(
             }
         )
         for call in calls.values():
-            result = await run_tool(call["name"], call["args"], transcript)
+            result = await run_tool(call["name"], call["args"], transcript, ip)
             messages.append(
                 {"role": "tool", "tool_call_id": call["id"], "content": result}
             )

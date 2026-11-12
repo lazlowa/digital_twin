@@ -2,7 +2,26 @@
 
 ## Current task
 
-None. TID-10 (Style Polishing) was concluded by the developer on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+TID-11 (Remove contact notification), branch `tid-11`, uncommitted. The developer tests locally first; no push until instructed. TID-10 was concluded on 2026-11-12 and merged; the site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+
+## TID-11 (in progress)
+
+- Developer decisions (2026-11-12): email cap per client IP per day, in-memory and approximate; over the cap the email is skipped silently and the twin still says it doesn't know; contact requests get the email address and a pointer to the contact panel; privacy-notice content (transcripts may contain visitor data) belongs to TID-12; verify the cap live with cap 1, deploy with 10.
+- `app/tools.py`: `record_visitor_contact` removed; only `record_unknown_question(question, transcript, client_ip)` remains. `email_limiter` (the existing `RateLimiter`, 24 h window) caps emails per IP at `MAX_QUESTION_EMAILS_PER_DAY` (default 10, `app/config.py`); over the cap it logs a warning and returns "Recorded." without sending. `run_tool` takes the client IP and rejects any other tool name.
+- `app/chat.py`: passes `client_ip(request)` to the tool loop. `TOOL_GUIDANCE`: the twin cannot record contact details; it shares the email address from ME.md and points to the contact panel.
+- `templates/index.html`: privacy note updated (see below).
+- `data/ME.md` project section, `.env.example`, `README.md` updated. Tests: `tests/test_tools.py` (cap per IP, invalid calls incl. the removed tool), `tests/test_chat.py` (only one tool offered; cap of 1 skips the second email while the reply still streams), `tests/conftest.py` resets the email limiter.
+- Decisions recorded in `plan/DECISIONS.md` (2026-11-12, TID-11): contact tool removed (supersedes TID-4) and the email cap. Privacy note (approved, states the purpose): "If the twin can't answer a question, this conversation is emailed to Laszlo so he can improve its answers." The full privacy notice belongs to TID-12.
+
+## Verification (TID-11, 2026-11-12)
+
+- `uv run pytest`: 37 passed. `uv run ruff check .` and `uv run ruff format --check .`: pass.
+- Live, local server with `MAX_QUESTION_EMAILS_PER_DAY=1` (process env only), real OpenRouter and Gmail:
+  - "What is Laszlo's favourite dish? (TID-11 test 1)" -> "I don't know Laszlo's favourite dish..."; no cap warning; the developer confirmed the email arrived (one email only).
+  - "What is Laszlo's favourite film? (TID-11 test 2)" -> "I'm sorry, I don't know Laszlo's favourite film..."; log "Daily question email cap reached; email not sent" (1 occurrence).
+  - Three contact requests (hiring with name and email; "Can you take my email...?"; "How can I contact Laszlo?") -> each gave laszlo.anka@gmail.com and pointed to the contact panel; no tool call (no further cap warning, no invalid tool call in the log).
+- Developer request: the twin must not speak for Laszlo. `TOOL_GUIDANCE` now says the contact panel lists the email address and LinkedIn profile, and forbids statements about Laszlo's interest, availability or reaction. Re-checked live with `MAX_QUESTION_EMAILS_PER_DAY=0` (no emails): hiring and "Would Laszlo be interested...?" requests got the address and the panel description, and "I can't speak for Laszlo on whether he'd be interested". The interest question was recorded and skipped by the cap (expected).
+- Bug found by that re-check and fixed: a limit of 0 crashed `RateLimiter.hit` (IndexError, empty reply), also for the request rate limits. `app/ratelimit.py` now treats 0 as "block for a full window"; test `test_rate_limiter_zero_limit_blocks` in `tests/test_limits.py`. 38 tests pass.
 
 ## TID-10 (completed, merged)
 
