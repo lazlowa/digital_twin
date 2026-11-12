@@ -21,6 +21,7 @@ None. TID-7 (Deployment to Vercel) was closed by the developer on 2026-11-12, me
 - `GET /` renders the profile page; `/health` and static files return 200.
 - Streaming on Vercel (Python client): 200 `text/plain` with `nosniff`, 28 chunks between 1.45 s and 3.62 s.
 - Gmail SMTP from Vercel: "What is Laszlo's favourite dish? (deployment test)" -> "I'm sorry, I don't know Laszlo's favourite dish...". Logs show two OpenRouter calls (tool round) and no email error. The developer confirmed the email arrived.
+- Developer check (2026-11-12): after a router restart, https://lazlowa.space works over home Wi-Fi, and chat replies stream properly in the browser. The earlier all-at-once rendering was local to the developer's machine and network, not the app.
 - Custom domain (requests pinned to 216.198.79.1 because the local router still cached the old parking IP 192.64.119.46): `https://lazlowa.space/health` 200 with a valid certificate, `/` renders the page, `https://www.lazlowa.space/about` returns 308 to `https://lazlowa.space/about`, and chat streams (12 chunks between 1.61 s and 2.42 s).
 
 ## TID-6 (completed, merged)
@@ -96,14 +97,16 @@ None. TID-7 (Deployment to Vercel) was closed by the developer on 2026-11-12, me
 
 None.
 
+## On hold
+
+- TID-9 (Fix Email Notification): put on hold by the developer (2026-11-12) after the agent's review. Open concerns: a per-visitor hard cap and periodic batching of unanswered questions need state that survives between requests, which in-memory storage on Vercel serverless cannot guarantee (several instances, freezing, no background timers, Hobby cron at most daily, no reliable shutdown hook for sending email). Proposed: a small external store (for example Upstash Redis) with a per-IP contact counter, a shared question list, a lazy flush on requests and a daily cron backstop. This would reverse the "nothing is stored" decisions. Also open: how a visitor is identified (IP or conversation), the cap period, and whether batch emails include transcripts.
+
 ## Later to-do
 
-- Browser streaming on the deployed app: verified server-side only (Python client). The developer reached the site on mobile data, but did not report whether replies build up gradually in a browser. The developer's home Wi-Fi still resolved `lazlowa.space` to the old parking IP from the Fritz!Box DNS cache.
 - Preview deployments have no environment variables (production only), so chat fails on previews. Add them to the preview environment if needed.
 - Optional: GitHub Actions CI (pytest, ruff) before deploys; not part of the plan.
-- Browser streaming: on the developer's machine, replies appear at once in Chrome and Edge, although the server streams (Python client: 52 chunks over about 1.8 s). A minimal standalone streaming server was also delivered as one chunk to headless Edge, so local buffering (likely ESET web access protection, not proven) is suspected. The developer deferred this. Re-check on the deployed app (TID-7) and in a browser without ESET filtering.
 - Duplicate recording is reduced but not eliminated for repeated unanswerable questions (see verification). If it matters, consider a code guard.
 
 ## Next action
 
-The first push of `main` after TID-7 triggers the first Git-integration production deploy; check it succeeded. Then wait for the developer's next instruction (deferred style and content fine-tuning are listed under open points).
+New tasks TID-8 (preview deployments), TID-9 (on hold) and TID-10 (style polishing) were added to `plan/PLAN.md` by the developer. Wait for the developer to assign the next task.

@@ -140,3 +140,63 @@ Deploy the FastAPI app to Vercel using its Python runtime. Configure secrets as 
 - The Vercel hosting decision in `plan/DECISIONS.md` is confirmed or superseded, with developer approval.
 - `plan/STATE.md` is updated.
 
+## TID-8 Fix Preview Deployments
+
+### Description
+
+Preview deployments shall be fully functioning. Decision has to be made, whether it works with the same model or a free model with higher restrictions.
+
+### Acceptance Criteria
+
+- Preview deployments have a working chatbot
+
+## TID-9 Fix Email Notification
+
+### Remarks from Agent
+
+#### Issues
+
+   - Several function instances can run at once, and each has its own memory.
+   - Instances are frozen between requests and shut down after idling.
+   - There are no background timers between requests, so nothing can "send every 30 minutes" from memory.
+   - Vercel Cron could trigger a flush, but on the Hobby plan a cron job runs at most once a day, and it can land on a different instance than the one holding the questions.
+   - Sending on shutdown isn't reliable either. Vercel documents a 500 ms shutdown window for Node.js functions; I don't know whether Python functions get one at all, and an email can't reliably be sent in that time. A crash loses everything regardless.
+
+#### Proposed
+
+Proposed solution: a small external store, for example Upstash Redis through the Vercel Marketplace, which has a free tier:
+   - The contact cap becomes a per-IP counter with an expiry, for example 3 per day.
+   - Unanswered questions are appended to a shared list.
+   - The flush runs whenever a chat request finds the oldest stored question older than 30 minutes, plus a daily Vercel Cron as a backstop.
+   - Nothing is lost on rollout or crash, so no shutdown hook is needed.
+
+#### Decision
+
+This task is now on-hold for further evaluation and rework.
+
+### Description
+
+Contact registration shall have only one notification per email. This means that one visitor might want to register multiple emails, should the visitor register them in one message, then
+it one notification shall be created. However, if the visitor wants to register more contact in separate messages, then for each message, there shall be a notification. As of now,
+I don't believe that a guard needs to be in place to detect, if a notification is already sent for a specific email i.e., if visitor sends in message 1 "a@b.com" and in message 2
+"a@b.com, c@b.com", then it is ok to include "a@b.com" again in the notification. However, there should be a hard cap of 3 contact notification per visitor. I dont see any reason to have more.
+If the cap reached, the agent shall respond with a gentle message.
+
+On the other hand, unanswerable questions shall be collected across all visitors. Then one notification email per 30 minutes (configurable) shall be emitted (flush). Notification
+shall as well be sent before shutting down to avoid losing questions in case of a crash or rollout.
+
+### Acceptance Criteria
+
+- Contact notification hard cap of 3 is introduced (number shall be configurable, but default is 3)
+- Upon reaching the cap, the agent formulates a gentle response about not being able to send more message
+- Unanswerable questions are collected and notification sent on regular base not on event based
+
+## TID-10 Style Polishing
+
+### Description
+
+Based on directly prompted instructions, multiple style variants shall be evaluated. Some aspects of the shown contents shall be refactored as well.
+
+### Acceptance Criteria
+
+- developer accepts the changes
