@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ resume.name }} - {{ resume.role }}</title>
+  <meta name="description" content="{{ resume.tagline }}">
+  <meta name="color-scheme" content="dark">
+  <link rel="preload" href="/static/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="bento">
+    <header class="tile tile-hero" style="--i: 0">
+      <p class="eyebrow">{{ resume.role }}</p>
+      <h1>Hi, I'm {{ resume.name.split()[0] }}.</h1>
+      <p class="tagline">{{ resume.tagline }}</p>
+      <div class="profile">{{ resume.profile_html | safe }}</div>
+      <button class="cta" type="button" popovertarget="chat">Ask my digital twin</button>
+    </header>
+
+    <aside class="tile tile-contact" style="--i: 1" aria-label="Contact">
+      <div class="monogram" aria-hidden="true">{% for part in resume.name.split() %}{{ part[0] }}{% endfor %}</div>
+      <p class="contact-name">{{ resume.name }}</p>
+      <ul class="contact-list">
+        {% for link in resume.links %}
+        <li>
+          <span class="contact-label">{{ link.label }}</span>
+          {% if link.href %}<a href="{{ link.href }}">{{ link.text }}</a>{% else %}<span>{{ link.text }}</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    {% for section in resume.sections %}
+    <section class="tile tile-{{ section.slug }}" id="{{ section.slug }}" style="--i: {{ loop.index + 1 }}">
+      <h2>{{ section.title }}</h2>
+      {{ section.html | safe }}
+    </section>
+    {% endfor %}
+  </main>
+
+  <button class="chat-launcher" type="button" popovertarget="chat">
+    <span class="pulse" aria-hidden="true"></span>
+    Ask my twin
+  </button>
+
+  <div class="chat" id="chat" popover aria-labelledby="chat-title">
+    <div class="chat-head">
+      <div>
+        <h2 id="chat-title">My digital twin</h2>
+        <p>An AI that knows my CV. Ask about my experience, projects or skills.</p>
+      </div>
+      <button class="chat-close" type="button" popovertarget="chat" popovertargetaction="hide" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="chat-log" aria-live="polite">
+      <p class="chat-empty">The chat is coming soon.</p>
+    </div>
+    <form class="chat-form" onsubmit="return false">
+      <label class="visually-hidden" for="chat-input">Your question</label>
+      <input id="chat-input" type="text" placeholder="What did you build with Kafka?" disabled>
+      <button type="submit" disabled>Send</button>
+    </form>
+  </div>
+</body>
+</html>

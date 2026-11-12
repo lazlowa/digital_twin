@@ -5,6 +5,8 @@ description = "Digital twin of Laszlo Anka: resume page with an LLM-backed chat.
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.162.4",
+    "jinja2>=3.1.6",
+    "markdown-it-py>=4.3.0",
     "pydantic-settings>=2.16.2",
     "uvicorn>=0.54.0",
 ]

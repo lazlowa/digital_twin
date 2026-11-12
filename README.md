@@ -5,6 +5,9 @@ professional questions on the owner's behalf.
 
 Stack: Python 3.12, FastAPI, uv.
 
+Content: `data/PROFILE.md` is the short profile shown on the page (each `##`
+section becomes a tile). `data/ME.md` is the full knowledge base for the LLM.
+
 ## Setup
 
 ```sh
