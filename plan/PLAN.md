@@ -81,7 +81,7 @@ Implement `POST /api/chat`. It accepts the conversation history (a list of `{rol
 
 ### Description
 
-Expose a `record_unknown_question(question: str)` tool to the LLM. Implement the tool-call loop: when the model calls the tool, execute it, return the result to the model, and continue streaming the final reply. The tool emails the question to `NOTIFY_TO` through Gmail SMTP using an App Password. If sending fails, the error is logged and the visitor still gets a reply.
+Expose a `record_unknown_question(question: str)` tool to the LLM. Implement the tool-call loop: when the model calls the tool, execute it, return the result to the model, and continue streaming the final reply. The tool emails the question to `NOTIFY_TO` through Gmail SMTP using an App Password. If sending fails, the error is logged and the visitor still gets a reply. Additionally expose record_visitor_contact(email: str, name: str | None, note: str | None). The twin offers it after it could not answer a question or when the visitor shows clear interest, without pushing. The contact details are emailed to NOTIFY_TO; nothing is stored. All notification emails include the conversation transcript. The chat panel shows a short privacy note about this.
 
 ### Acceptance Criteria
 
@@ -91,6 +91,8 @@ Expose a `record_unknown_question(question: str)` tool to the LLM. Implement the
 - A test verifies that an SMTP failure does not break the chat response.
 - A manual check confirms that a question not covered by `ME.md` (for example, "What is Laszlo's favourite dish?") delivers an email and that the twin says it does not know. The result is recorded in `plan/STATE.md`.
 - Lint and tests pass, and `plan/STATE.md` is updated.
+- A test with mocked SMTP verifies the contact email: recipient, subject, and a body containing the email, name, note and transcript.
+- A manual check confirms that sharing an email address in the chat delivers a contact email. The result is recorded in plan/STATE.md.
 
 ## TID-5 Chat UI
 

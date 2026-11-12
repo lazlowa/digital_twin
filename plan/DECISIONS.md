@@ -87,3 +87,19 @@ Decision: Refines "Unknown-question notification: Gmail" (2026-11-11). Email rem
 Rationale: Matches the developer's existing configuration values and keeps the SMTP server configurable.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-4 | Unknown-question handling
+
+Decision: The twin records every question it cannot answer from `data/ME.md`, including unrelated ones, and still steers unrelated conversations back to professional topics. It tells the visitor only that it does not know, without mentioning the notification. Notification emails include the question and the full conversation transcript.
+
+Rationale: Developer choice. The transcript gives context for a follow-up; recording everything gives a complete picture of what visitors ask.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-4 | Visitor contact tool and privacy note
+
+Decision: Add a `record_visitor_contact(email, name?, note?)` tool. The twin offers it after it could not answer a question or when the visitor shows clear interest, without pushing. The details and the transcript are emailed to `NOTIFY_TO` immediately; nothing is stored. The chat panel shows a one-line privacy note about forwarding by email, with wording approved by the developer.
+
+Rationale: Lets the developer follow up with interested visitors while the app stays stateless. The note informs visitors that conversations may be forwarded.
+
+Approved by developer: yes

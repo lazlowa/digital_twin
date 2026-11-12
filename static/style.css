@@ -579,6 +579,19 @@ p:last-child {
   font-size: 0.9rem;
 }
 
+.chat-privacy {
+  margin: 0;
+  padding: 0.75rem 1.25rem 0;
+  color: var(--faint);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  border-top: 1px solid var(--line);
+}
+
+.chat-privacy + .chat-form {
+  border-top: 0;
+}
+
 .chat-form {
   display: flex;
   gap: 0.5rem;
