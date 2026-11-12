@@ -2,16 +2,16 @@
 
 ## Current task
 
-TID-11 (Remove contact notification), branch `tid-11`, uncommitted. The developer tests locally first; no push until instructed. TID-10 was concluded on 2026-11-12 and merged; the site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+None. TID-11 (Remove contact notification) was concluded by the developer on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
 
-## TID-11 (in progress)
+## TID-11 (completed, merged)
 
 - Developer decisions (2026-11-12): email cap per client IP per day, in-memory and approximate; over the cap the email is skipped silently and the twin still says it doesn't know; contact requests get the email address and a pointer to the contact panel; privacy-notice content (transcripts may contain visitor data) belongs to TID-12; verify the cap live with cap 1, deploy with 10.
 - `app/tools.py`: `record_visitor_contact` removed; only `record_unknown_question(question, transcript, client_ip)` remains. `email_limiter` (the existing `RateLimiter`, 24 h window) caps emails per IP at `MAX_QUESTION_EMAILS_PER_DAY` (default 10, `app/config.py`); over the cap it logs a warning and returns "Recorded." without sending. `run_tool` takes the client IP and rejects any other tool name.
 - `app/chat.py`: passes `client_ip(request)` to the tool loop. `TOOL_GUIDANCE`: the twin cannot record contact details; it shares the email address from ME.md and points to the contact panel.
 - `templates/index.html`: privacy note updated (see below).
 - `data/ME.md` project section, `.env.example`, `README.md` updated. Tests: `tests/test_tools.py` (cap per IP, invalid calls incl. the removed tool), `tests/test_chat.py` (only one tool offered; cap of 1 skips the second email while the reply still streams), `tests/conftest.py` resets the email limiter.
-- Decisions recorded in `plan/DECISIONS.md` (2026-11-12, TID-11): contact tool removed (supersedes TID-4) and the email cap. Privacy note (approved, states the purpose): "If the twin can't answer a question, this conversation is emailed to Laszlo so he can improve its answers." The full privacy notice belongs to TID-12.
+- Decisions recorded in `plan/DECISIONS.md` (2026-11-12, TID-11): contact tool removed (supersedes TID-4), the email cap, and the privacy note wording. Privacy note (approved, states the purpose): "If the twin can't answer a question, this conversation is emailed to Laszlo so he can improve its answers." The full privacy notice belongs to TID-12.
 
 ## Verification (TID-11, 2026-11-12)
 
@@ -30,7 +30,7 @@ TID-11 (Remove contact notification), branch `tid-11`, uncommitted. The develope
 - Step 3 (developer: keep in PROFILE.md and reword): Highlights rewritten in first person, about half the length, with bold titles (Framework adoption, Distributed systems, Developer enablement, Building teams), key figures as `*...*` rendered in cyan, non-italic, and a pypz link. "30+" is not repeated (already in the profile text). Facts unchanged from ME.md. Styles: `.tile-highlights strong/em/a`. Verified: 36 tests pass; 1280 px screenshot. The developer then refined the pypz item ("the standard in one of Bosch's business units"; the unit is deliberately not named). Committed and pushed to `tid-10` for a preview on developer instruction.
 - Step 4 (developer request, on `tid-10`): `data/ME.md` has a new section "Project: This Website (AI-Built Digital Twin)" before "Personal and Side Projects": what the site is, its purpose (showing recruiters AI-assisted product development), the repository link `github.com/lazlowa/digital_twin` (developer intends to make the repo public; Vercel Git Fork Protection confirmed enabled by the developer), roles ("Laszlo wrote the plan, made every decision and reviewed every change; an AI coding agent (Claude Code) wrote the code"), product and technology, the workflow, and skills demonstrated. No timeline, as requested.
 - Step 5: the repository is public (developer, 2026-11-12). `data/PROFILE.md` Identity has "Source of this site: github.com/lazlowa/digital_twin", shown as a link in the contact card (verified with a 1280 px screenshot; 36 tests pass).
-- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): page content changes (panels removed, Highlights added), the ME.md project section, and making the repository public.
+- Decisions recorded in `plan/DECISIONS.md` (2026-11-12, TID-10): Highlights instead of In Numbers and Open Source; public repository and the ME.md project section.
 
 ## TID-8 (completed, merged)
 
@@ -154,4 +154,4 @@ None.
 
 ## Next action
 
-Wait for the developer to assign the next task. TID-9 is on hold; all other tasks (TID-1 to TID-8, TID-10) are complete.
+Wait for the developer to assign the next task. Open: TID-12 (Impressum and footer; agreed so far: Impressum and privacy notice handled separately, the Preview badge stays, the build id moves to a discreet footer, legal research is reported before any text is written, language of the legal texts still open). TID-9 is on hold; TID-11 removed its contact half, so the developer may reduce or close it. TID-1 to TID-8, TID-10 and TID-11 are complete.

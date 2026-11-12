@@ -167,3 +167,27 @@ Decision: Unanswered-question emails are capped per client IP per 24 hours by `M
 Rationale: Prevents abuse of the notification email. In-memory counting is approximate on serverless hosting, which the developer accepted.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-10 | Page content: Highlights instead of In Numbers and Open Source
+
+Decision: The "In Numbers" and "Open Source" panels are removed from the page. A full-width "Highlights" panel follows the profile, hand-written in `data/PROFILE.md` (not parsed from `data/ME.md`): first person, bold titles, key figures emphasised, and a link to pypz. The business unit where pypz became the standard is deliberately not named.
+
+Rationale: The developer found both panels thin with a single open-source project. Keeping the page copy in `PROFILE.md` follows "Page content comes from data/PROFILE.md" (2026-11-12, TID-2): the page needs short text, while `ME.md` stays detailed for the LLM.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-10 | Public repository and project section in ME.md
+
+Decision: The repository https://github.com/lazlowa/digital_twin is public, and the page links to it in the contact panel. `data/ME.md` describes this website as a project: what it is, its purpose (showing how Laszlo builds products with AI-assisted development), the roles ("Laszlo wrote the plan, made every decision and reviewed every change; an AI coding agent (Claude Code) wrote the code"), the technology, the workflow and the skills it demonstrates, without a timeline.
+
+Rationale: The project's purpose is to show recruiters the AI-assisted way of working, and the public plan, state and decision files make that visible. No secrets were found in the history, and Vercel Git Fork Protection is enabled.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-11 | Chat privacy note states the purpose
+
+Decision: The chat panel note reads "If the twin can't answer a question, this conversation is emailed to Laszlo so he can improve its answers." It replaces the TID-4 wording, which also mentioned shared contact details. The full privacy notice is part of TID-12.
+
+Rationale: Visitors should learn why their conversation is forwarded, not only that it is.
+
+Approved by developer: yes
