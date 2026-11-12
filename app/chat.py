@@ -10,9 +10,10 @@ import openai
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from openai import AsyncOpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 from app.config import settings
+from app.ratelimit import rate_limit
 from app.tools import TOOLS, format_transcript, run_tool
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,11 +29,25 @@ router = APIRouter()
 class Message(BaseModel):
     # No "system" role from clients: visitors must not override the instructions.
     role: Literal["user", "assistant"]
-    content: str
+    content: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def check_length(self) -> "Message":
+        # Earlier twin replies come back as history and may be longer than a
+        # visitor message, so they get a bound derived from the token limit.
+        if self.role == "user":
+            limit = settings.max_message_chars
+        else:
+            limit = 8 * settings.max_response_tokens
+        if len(self.content) > limit:
+            raise ValueError(f"Message is too long (max {limit} characters)")
+        return self
 
 
 class ChatRequest(BaseModel):
-    messages: list[Message]
+    messages: list[Message] = Field(
+        min_length=1, max_length=settings.max_history_messages
+    )
 
 
 def load_instructions(path: Path = PLAN_PATH) -> str:
@@ -77,7 +92,7 @@ def get_client() -> AsyncOpenAI:
     )
 
 
-@router.post("/api/chat")
+@router.post("/api/chat", dependencies=[Depends(rate_limit)])
 async def chat(
     request: ChatRequest, client: Annotated[AsyncOpenAI, Depends(get_client)]
 ) -> StreamingResponse:
@@ -104,7 +119,11 @@ async def chat(
 
 async def _complete(client: AsyncOpenAI, messages: list[dict]) -> AsyncIterator:
     return await client.chat.completions.create(
-        model=settings.openrouter_model, messages=messages, tools=TOOLS, stream=True
+        model=settings.openrouter_model,
+        messages=messages,
+        tools=TOOLS,
+        max_tokens=settings.max_response_tokens,
+        stream=True,
     )
 
 

@@ -11,5 +11,11 @@ class Settings(BaseSettings):
     email_app_password: str = ""
     notify_to: str = ""
 
+    max_message_chars: int = 2000
+    max_history_messages: int = 40
+    max_response_tokens: int = 1000
+    rate_limit_per_minute: int = 10
+    rate_limit_per_day: int = 100
+
 
 settings = Settings()

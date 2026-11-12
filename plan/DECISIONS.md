@@ -111,3 +111,11 @@ Decision: Replies are rendered by a small built-in Markdown renderer in vanilla 
 Rationale: Model replies use Markdown, and a small renderer avoids new dependencies while staying safe. Starter questions lower the barrier to start. Memory-only history follows PLAN.md and stores nothing in the browser.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-6 | Limits and rate limiting
+
+Decision: Default limits are 2,000 characters per message, 40 messages of history, 1,000 response tokens, and 10 requests per minute and 100 per day per IP, all configurable through settings. The rate limit is an in-memory sliding-window counter without a new dependency. Notification emails have no extra cap beyond the per-IP request limit. Locally the client IP is the direct connection address; trusting a proxy's forwarding header is decided in TID-7.
+
+Rationale: Moderate limits keep normal conversations unaffected while bounding cost per visitor. In-memory counting is simple and sufficient as abuse protection together with an OpenRouter spending limit, although it is only approximate on serverless hosting.
+
+Approved by developer: yes

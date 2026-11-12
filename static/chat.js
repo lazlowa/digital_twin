@@ -10,7 +10,12 @@ const starters = document.getElementById("chat-starters");
 const history = [];
 let busy = false;
 
-const ERROR_TEXT = "Sorry, something went wrong. Please try again in a moment.";
+const maxHistory = Number(form.dataset.maxHistory);
+const ERRORS = {
+  422: "That message could not be sent. Please shorten it and try again.",
+  429: "You're sending messages quickly. Please wait a moment and try again.",
+  default: "Sorry, something went wrong. Please try again in a moment.",
+};
 
 function updateSend() {
   send.disabled = busy || !input.value.trim();
@@ -39,13 +44,20 @@ async function ask(question) {
   scrollDown();
 
   let text = "";
+  let errorText = ERRORS.default;
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history }),
+      // The server limits the history length; older turns are dropped first.
+      // The history ends with the new question, so an odd count keeps the
+      // window starting with a visitor message.
+      body: JSON.stringify({ messages: history.slice(-(maxHistory - 1 + (maxHistory % 2))) }),
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      errorText = ERRORS[response.status] || ERRORS.default;
+      throw new Error(`HTTP ${response.status}`);
+    }
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
     for (;;) {
       const { value, done } = await reader.read();
@@ -62,7 +74,7 @@ async function ask(question) {
     history.pop();
     reply.classList.remove("pending");
     reply.classList.add("msg-error");
-    reply.textContent = ERROR_TEXT;
+    reply.textContent = errorText;
     if (!input.value) input.value = question;
   } finally {
     busy = false;

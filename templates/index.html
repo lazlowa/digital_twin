@@ -62,9 +62,9 @@
       </div>
     </div>
     <p class="chat-privacy">If the twin can't answer a question or you share your contact details, this conversation is forwarded to {{ resume.name.split()[0] }} by email.</p>
-    <form class="chat-form" id="chat-form">
+    <form class="chat-form" id="chat-form" data-max-history="{{ settings.max_history_messages }}">
       <label class="visually-hidden" for="chat-input">Your question</label>
-      <textarea id="chat-input" rows="1" placeholder="Ask me something..."></textarea>
+      <textarea id="chat-input" rows="1" maxlength="{{ settings.max_message_chars }}" placeholder="Ask me something..."></textarea>
       <button type="submit" id="chat-send" disabled>Send</button>
     </form>
   </div>

@@ -2,9 +2,27 @@
 
 ## Current task
 
-None. TID-5 (Chat UI) was closed by the developer on 2026-11-12, merged into `main` and pushed.
+None. TID-6 (Hardening) was closed by the developer on 2026-11-12, merged into `main` and pushed.
 
-## TID-5 (completed)
+## TID-6 (completed, merged)
+
+- `app/config.py`, `.env.example`: `MAX_MESSAGE_CHARS` (2000), `MAX_HISTORY_MESSAGES` (40), `MAX_RESPONSE_TOKENS` (1000), `RATE_LIMIT_PER_MINUTE` (10), `RATE_LIMIT_PER_DAY` (100).
+- `app/chat.py`: request validation returns 422 for empty or over-long histories and empty messages. Visitor messages are limited to `MAX_MESSAGE_CHARS`. Earlier twin replies in the history may be up to 8 x `MAX_RESPONSE_TOKENS` characters, because replies can be longer than visitor messages. Every model call sends `max_tokens=MAX_RESPONSE_TOKENS`. The `rate_limit` dependency runs on `/api/chat`.
+- `app/ratelimit.py`: in-memory sliding-window limiter per client IP (`request.client.host`), with per-minute and per-day windows. Requests over a limit get 429 with `Retry-After`. Rejected requests are not counted; requests that fail validation are.
+- `templates/index.html`, `app/main.py`: the textarea has `maxlength` set to the message limit, and the form carries the history limit.
+- `static/chat.js`: sends at most the last 39 messages (odd, so the window starts with a visitor message), and shows specific messages for 429 and 422.
+- `README.md`: limits section and the recommendation to set an OpenRouter spending limit.
+- `tests/conftest.py` (resets the limiter), `tests/test_limits.py`.
+- Decision recorded in `plan/DECISIONS.md` (2026-11-12, TID-6).
+
+## Verification (TID-6, 2026-11-12)
+
+- `uv run pytest`: 33 passed. `uv run ruff check .` and `uv run ruff format --check .`: pass. `node --check static/chat.js`: OK.
+- Tests cover over-long message and history (422), a long earlier twin reply (200), malformed bodies and invalid JSON (422), 429 after `RATE_LIMIT_PER_MINUTE` requests with `Retry-After`, the `max_tokens` cap, and the minute and day windows with a fake clock.
+- Live server: 10 invalid requests got 422, then 429 with `Retry-After: 59`, and a valid request was also blocked. The page renders `maxlength="2000"` and `data-max-history="40"`.
+- The chat UI's 429/422 messages and the history trimming were checked with Node (syntax, trimming parity) but not in a browser.
+
+## TID-5 (completed, merged)
 
 - `static/chat.js` (vanilla JS, loaded with `defer`): keeps the history in memory and sends it to `/api/chat`. It reads the reply stream with `TextDecoderStream` and re-renders the reply with a minimal Markdown renderer on every chunk (paragraphs, lists, headings as bold, bold, italic, inline code, http(s)/mailto links; all other content is escaped). A typing indicator shows while waiting. Send is disabled while a reply is in progress or the input is empty. Enter sends, Shift+Enter adds a new line. On error it shows "Sorry, something went wrong. Please try again in a moment.", removes the failed question from the history, and puts it back into the input. The input is focused when the panel opens. Starter chips are removed after the first question.
 - `templates/index.html`: client-side greeting, three starter questions, a textarea input, and the script tag.
@@ -61,9 +79,10 @@ None.
 
 ## Later to-do
 
+- TID-7: behind Vercel the client IP must come from the proxy's forwarding header (`X-Forwarded-For` / `X-Real-IP`). Otherwise all visitors share one rate limit. Locally the direct connection address is used.
 - Browser streaming: on the developer's machine, replies appear at once in Chrome and Edge, although the server streams (Python client: 52 chunks over about 1.8 s). A minimal standalone streaming server was also delivered as one chunk to headless Edge, so local buffering (likely ESET web access protection, not proven) is suspected. The developer deferred this. Re-check on the deployed app (TID-7) and in a browser without ESET filtering.
 - Duplicate recording is reduced but not eliminated for repeated unanswerable questions (see verification). If it matters, consider a code guard.
 
 ## Next action
 
-Wait for the developer to assign the next task (TID-6 starts only on explicit instruction).
+Wait for the developer to assign the next task (TID-7 starts only on explicit instruction).

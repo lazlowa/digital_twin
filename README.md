@@ -15,6 +15,17 @@ uv sync
 cp .env.example .env   # then fill in the values
 ```
 
+## Limits and costs
+
+`POST /api/chat` rejects over-long messages and histories (`422`) and limits
+requests per client IP (`429`). The limits and the maximum response length are
+configurable in `.env` (see `.env.example`). Rate limits are counted in memory
+per server process, so on serverless hosting they are approximate.
+
+Set a spending limit for the API key in OpenRouter
+(<https://openrouter.ai/keys>) so that abuse cannot cause unbounded
+costs.
+
 ## Run
 
 ```sh
