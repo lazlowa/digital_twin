@@ -39,3 +39,51 @@ Decision: Vercel is the preferred hosting target, using its Python runtime for F
 Rationale: The developer prefers Vercel but is unsure about it. The app is stateless, so it fits serverless hosting in principle.
 
 Approved by developer: tentative, pending validation
+
+## 2026-11-12 | TID-2 | Page content comes from data/PROFILE.md
+
+Decision: The page renders a short, hand-curated `data/PROFILE.md` (identity, profile, and one bento tile per `##` section). `data/ME.md` remains the full knowledge base for the LLM and is not shown on the page.
+
+Rationale: The first version rendered all of `ME.md` and was too verbose and dry for visitors. A separate file keeps the page short while the LLM keeps full detail.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-2 | Page design: bento grid, floating chat widget
+
+Decision: Dark bento-grid layout with a confident, warm first-person tone. The chat is a floating widget (launcher button plus popover panel). Fonts are Geist and Geist Mono, self-hosted.
+
+Rationale: Developer choices after the first design was judged dated. Self-hosting fonts avoids sending visitor IPs to Google. Style and copy fine-tuning is deferred.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-3 | Default model: anthropic/claude-haiku-5.5
+
+Decision: `OPENROUTER_MODEL` defaults to `anthropic/claude-haiku-5.5` (USD 0.10 / 0.50 per million input / output tokens on OpenRouter at the time of the decision, supports tool calling).
+
+Rationale: Low cost per reply, tool calling for TID-4, and reliable instruction following. The model can be changed through settings.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-3 | System prompt instructions are read from plan/PLAN.md
+
+Decision: The chat endpoint parses the quoted instruction block from `plan/PLAN.md` at runtime and appends the full `data/ME.md`. `plan/` must therefore be deployed with the app.
+
+Rationale: Developer choice for a single source of the instructions.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-3 | Chat API contract
+
+Decision: `POST /api/chat` accepts `{"messages": [{"role", "content"}]}`, streams the reply as plain text chunks (`text/plain`), and accepts only the `user` and `assistant` roles from clients. No reply-language rule is added to the prompt.
+
+Rationale: Plain text is the simplest stream for a vanilla JavaScript client. Rejecting client `system` messages keeps visitors from overriding the instructions.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-3 | Notification settings use generic email names
+
+Decision: Refines "Unknown-question notification: Gmail" (2026-11-11). Email remains the notification channel, configured as `EMAIL_SMTP_SERVER` (default `smtp.gmail.com`), `EMAIL_ADDRESS`, `EMAIL_APP_PASSWORD`, and `NOTIFY_TO` instead of `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD`. `PUSHOVER_USER` and `PUSHOVER_TOKEN` are kept as optional, unused settings for possible later use.
+
+Rationale: Matches the developer's existing configuration values and keeps the SMTP server configurable.
+
+Approved by developer: yes
