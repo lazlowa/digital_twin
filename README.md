@@ -49,10 +49,13 @@ The app runs on Vercel as a single Python function (FastAPI preset, region
 app because the LLM instructions are read from it.
 
 1. Link the project: `vercel link --project digital-twin`.
-2. Add the variables from `.env.example` as production environment variables
-   (`vercel env add NAME production`), with `TRUST_PROXY_HEADERS=true`.
-3. Deploy: pushes to `main` deploy to production through the Git integration;
-   `vercel deploy --prod` deploys the local working tree manually.
+2. Add the variables from `.env.example` to the production and preview
+   environments (`vercel env add NAME --environment production,preview`), with
+   `TRUST_PROXY_HEADERS=true`.
+3. Deploy: pushes to `main` deploy to production through the Git integration,
+   pushes to other branches create preview deployments. `vercel deploy --prod`
+   deploys the local working tree manually. Notification emails sent from
+   previews have a `[Preview]` subject prefix.
 4. Custom domain: `lazlowa.space` with an `A` record to Vercel and
    `www.lazlowa.space` as a `CNAME` (see `vercel domains verify <domain>`);
    `vercel.json` redirects `www` to the apex domain.

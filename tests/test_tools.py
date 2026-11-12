@@ -84,6 +84,16 @@ def test_visitor_contact_email(smtp: list[EmailMessage]) -> None:
     assert TRANSCRIPT in body
 
 
+def test_preview_subject_prefix(
+    smtp: list[EmailMessage], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "vercel_env", "preview")
+
+    tools.record_unknown_question("Favourite dish?", TRANSCRIPT)
+
+    assert smtp[0]["Subject"] == "[Preview] Digital twin: unanswered question"
+
+
 def test_run_tool_dispatches_json_arguments(smtp: list[EmailMessage]) -> None:
     args = '{"email": "jane@example.com"}'
 

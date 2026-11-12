@@ -63,6 +63,8 @@ def format_transcript(messages: list[dict]) -> str:
 
 
 def send_email(subject: str, body: str) -> None:
+    if settings.vercel_env == "preview":
+        subject = f"[Preview] {subject}"
     message = EmailMessage()
     message["Subject"] = subject
     message["From"] = settings.email_address

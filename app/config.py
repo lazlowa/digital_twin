@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     rate_limit_per_day: int = 100
     # Only behind a proxy that sets X-Real-IP / X-Forwarded-For itself (Vercel).
     trust_proxy_headers: bool = False
+    # Set by Vercel: production, preview or development.
+    vercel_env: str = ""
 
 
 settings = Settings()
