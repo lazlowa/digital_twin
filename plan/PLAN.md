@@ -46,21 +46,21 @@ Set up the Python project with `uv`: `pyproject.toml`, a FastAPI app in `app/`, 
 - `uv run uvicorn app.main:app` starts the server, and `GET /health` returns `200` with `{"status": "ok"}`.
 - `uv run ruff check .` and `uv run ruff format --check .` pass.
 - `uv run pytest` passes, with at least one test covering `/health`.
-- `.env` is git-ignored, and `.env.example` documents `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD`, and `NOTIFY_TO`.
+- `.env` is git-ignored, and `.env.example` documents `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `EMAIL_SMTP_SERVER`, `EMAIL_ADDRESS`, `EMAIL_APP_PASSWORD`, and `NOTIFY_TO`.
 - `plan/STATE.md` is updated.
 
 ## TID-2 Resume page
 
 ### Description
 
-Serve the single page at `GET /`. A Jinja2 template renders `data/ME.md` (Markdown to HTML) as the resume, with the executive summary prominent at the top. Add a clean, responsive layout using plain CSS, and leave a placeholder region for the chat panel.
+Serve the single page at `GET /`. A Jinja2 template renders `data/PROFILE.md`, a short, hand-curated profile (Markdown to HTML), as a bento grid with the profile prominent at the top. `data/ME.md` remains the full knowledge base for the LLM and is not shown on the page. Add a modern, responsive layout using plain CSS, and a floating chat widget placeholder.
 
 ### Acceptance Criteria
 
-- `GET /` returns HTML containing the rendered content of `data/ME.md`, including the executive summary.
+- `GET /` returns HTML containing the rendered content of `data/PROFILE.md`, including the profile.
 - The page is readable on desktop and mobile widths without horizontal scrolling.
-- Changing `data/ME.md` changes the page with no code changes.
-- A test asserts that `GET /` returns `200` and contains the executive summary heading.
+- Changing `data/PROFILE.md` changes the page with no code changes.
+- A test asserts that `GET /` returns `200` and contains the profile text.
 - Lint and tests pass, and `plan/STATE.md` is updated.
 
 ## TID-3 Chat backend
@@ -81,18 +81,18 @@ Implement `POST /api/chat`. It accepts the conversation history (a list of `{rol
 
 ### Description
 
-Expose a `record_unknown_question(question: str)` tool to the LLM. Implement the tool-call loop: when the model calls the tool, execute it, return the result to the model, and continue streaming the final reply. The tool emails the question to `NOTIFY_TO` through Gmail SMTP using an App Password. If sending fails, the error is logged and the visitor still gets a reply. Additionally expose record_visitor_contact(email: str, name: str | None, note: str | None). The twin offers it after it could not answer a question or when the visitor shows clear interest, without pushing. The contact details are emailed to NOTIFY_TO; nothing is stored. All notification emails include the conversation transcript. The chat panel shows a short privacy note about this.
+Expose a `record_unknown_question(question: str)` tool to the LLM. Implement the tool-call loop: when the model calls the tool, execute it, return the result to the model, and continue streaming the final reply. The tool emails the question to `NOTIFY_TO` over SMTP (Gmail, using an App Password). If sending fails, the error is logged and the visitor still gets a reply. Additionally expose `record_visitor_contact(email: str, name: str | None, note: str | None)`. The twin offers it after it could not answer a question or when the visitor shows clear interest, without pushing. The contact details are emailed to `NOTIFY_TO`; nothing is stored. All notification emails include the conversation transcript. The chat panel shows a short privacy note about this.
 
 ### Acceptance Criteria
 
-- The model is offered the tool on every chat request.
+- The model is offered both tools on every chat request.
 - A test with a mocked LLM that emits a tool call verifies that the tool runs with the question, the result goes back to the model, and the final reply is streamed.
 - A test with mocked SMTP verifies the email recipient, subject, and body.
 - A test verifies that an SMTP failure does not break the chat response.
 - A manual check confirms that a question not covered by `ME.md` (for example, "What is Laszlo's favourite dish?") delivers an email and that the twin says it does not know. The result is recorded in `plan/STATE.md`.
 - Lint and tests pass, and `plan/STATE.md` is updated.
 - A test with mocked SMTP verifies the contact email: recipient, subject, and a body containing the email, name, note and transcript.
-- A manual check confirms that sharing an email address in the chat delivers a contact email. The result is recorded in plan/STATE.md.
+- A manual check confirms that sharing an email address in the chat delivers a contact email. The result is recorded in `plan/STATE.md`.
 
 ## TID-5 Chat UI
 

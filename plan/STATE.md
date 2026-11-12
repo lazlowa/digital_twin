@@ -26,7 +26,7 @@ None. TID-4 was closed by the developer on 2026-11-12, merged into `main` and pu
 
 ## Open points for the developer
 
-- PLAN.md TID-2 still says the page renders `data/ME.md`; TID-1 and TID-4 still name `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD`. The developer may update the wording.
+- PLAN.md wording fixed by the agent with one-time developer permission (2026-11-12): TID-1 lists the `EMAIL_*` settings, TID-2 describes `data/PROFILE.md` and the bento page, and TID-4 says SMTP (Gmail) and "both tools". The quoted instruction block was not changed. Not committed yet.
 - Deferred: page style fine-tuning (font alternatives offered: Plus Jakarta Sans, Manrope, Space Grotesk, Sora) and review of the agent-written `data/PROFILE.md` copy.
 
 ## Blockers
