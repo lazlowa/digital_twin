@@ -2,15 +2,16 @@
 
 ## Current task
 
-TID-10 (Style Polishing), branch `tid-10`, done stepwise on developer instructions. Steps 1 to 3 are committed and pushed to `tid-10` (preview deployment).
+None. TID-10 (Style Polishing) was concluded by the developer on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
 
-## TID-10 (in progress)
+## TID-10 (completed, merged)
 
 - Step 1: removed the "In Numbers" and "Open Source" sections from `data/PROFILE.md` and their styles from `static/style.css`. `.tile-experience` now spans 2 rows (was 3), and education spans full width on tablet. `data/ME.md` still covers pypz for the chat. Verified: `uv run pytest` 36 passed; headless Edge screenshots at 1280 and 900 px show no gaps.
 - Step 2: "Highlights" section in `data/PROFILE.md` right after Profile, text copied literally from `data/ME.md` "Selected Contributions (Highlights)". Full-width tile (`.tile-highlights`, span 4), items in two columns on desktop, one column below 40rem. Verified: 36 tests pass; 1280 px screenshot fine. The 390 px headless screenshot clipped every tile on the right, including unchanged ones, which suggests a headless window-size limit rather than the layout; mobile is not verified in a browser. 
 - Step 3 (developer: keep in PROFILE.md and reword): Highlights rewritten in first person, about half the length, with bold titles (Framework adoption, Distributed systems, Developer enablement, Building teams), key figures as `*...*` rendered in cyan, non-italic, and a pypz link. "30+" is not repeated (already in the profile text). Facts unchanged from ME.md. Styles: `.tile-highlights strong/em/a`. Verified: 36 tests pass; 1280 px screenshot. The developer then refined the pypz item ("the standard in one of Bosch's business units"; the unit is deliberately not named). Committed and pushed to `tid-10` for a preview on developer instruction.
-
-TID-8 (Fix Preview Deployments) was concluded on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space.
+- Step 4 (developer request, on `tid-10`): `data/ME.md` has a new section "Project: This Website (AI-Built Digital Twin)" before "Personal and Side Projects": what the site is, its purpose (showing recruiters AI-assisted product development), the repository link `github.com/lazlowa/digital_twin` (developer intends to make the repo public; Vercel Git Fork Protection confirmed enabled by the developer), roles ("Laszlo wrote the plan, made every decision and reviewed every change; an AI coding agent (Claude Code) wrote the code"), product and technology, the workflow, and skills demonstrated. No timeline, as requested.
+- Step 5: the repository is public (developer, 2026-11-12). `data/PROFILE.md` Identity has "Source of this site: github.com/lazlowa/digital_twin", shown as a link in the contact card (verified with a 1280 px screenshot; 36 tests pass).
+- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): page content changes (panels removed, Highlights added), the ME.md project section, and making the repository public.
 
 ## TID-8 (completed, merged)
 
@@ -116,7 +117,8 @@ TID-8 (Fix Preview Deployments) was concluded on 2026-11-12, merged into `main` 
 ## Open points for the developer
 
 - PLAN.md wording fixed by the agent with one-time developer permission (2026-11-12): TID-1 lists the `EMAIL_*` settings, TID-2 describes `data/PROFILE.md` and the bento page, and TID-4 says SMTP (Gmail) and "both tools". The quoted instruction block was not changed.
-- Deferred: page style fine-tuning (font alternatives offered: Plus Jakarta Sans, Manrope, Space Grotesk, Sora) and review of the agent-written `data/PROFILE.md` copy.
+- Deferred: font alternatives (Plus Jakarta Sans, Manrope, Space Grotesk, Sora) were offered and not taken up. The `data/PROFILE.md` copy was reviewed and adjusted by the developer in TID-10.
+- Mobile layout after TID-10 is not verified in a real browser.
 
 ## Blockers
 
@@ -133,4 +135,4 @@ None.
 
 ## Next action
 
-Wait for the developer to assign the next task. TID-9 is on hold; TID-10 (style polishing) is open.
+Wait for the developer to assign the next task. TID-9 is on hold; all other tasks (TID-1 to TID-8, TID-10) are complete.

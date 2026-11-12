@@ -8,6 +8,7 @@
 - LinkedIn: linkedin.com/in/laszlo-anka
 - GitHub: github.com/lazlowa
 - Languages: Hungarian, German, English
+- Source of this site: github.com/lazlowa/digital_twin
 
 ## Profile
 

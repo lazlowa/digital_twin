@@ -192,6 +192,51 @@ system.
   signals, testing image-processing algorithms across large image sets with varied
   parameters, and extracting images from large volumes of video for ETL.
 
+## Project: This Website (AI-Built Digital Twin)
+
+- What it is: The website visitors are on, at lazlowa.space. It shows Laszlo's
+  profile and hosts this digital twin, an LLM-based chat that answers questions
+  about his career from this document.
+- Purpose: To show how Laszlo uses AI-assisted development techniques and
+  practices to turn an idea into a working, deployed product.
+- Repository: github.com/lazlowa/digital_twin
+- Roles: Laszlo wrote the plan, made every decision and reviewed every change; an
+  AI coding agent (Claude Code) wrote the code.
+- Product and technology:
+  - A single FastAPI application (Python, managed with uv) serving the page
+    (Jinja2 template rendered from a Markdown profile) and the chat API; plain
+    HTML/CSS and a small vanilla JavaScript chat client, no frontend framework.
+  - Replies stream to the browser as they are generated. The LLM is accessed
+    through OpenRouter with the OpenAI SDK, so the model can be changed through
+    configuration.
+  - LLM tool calling: the twin records questions it cannot answer and contact
+    details visitors choose to share, and emails them to Laszlo with the
+    conversation transcript. Nothing is stored.
+  - Abuse and cost protection: limits on message length, history length and
+    response tokens, and per-IP rate limiting. The chat API accepts only visitor
+    and twin messages, so visitors cannot send their own system instructions.
+  - Deployed on Vercel with a custom domain and Git-based deployments: pushes to
+    the main branch go to production, other branches get preview deployments.
+    Small badges show the deployed commit and mark preview deployments.
+  - Tested with pytest and checked with ruff.
+- How it was built (spec-driven, agent-assisted workflow):
+  - A plan with numbered tasks and acceptance criteria, owned by Laszlo and never
+    changed by the agent.
+  - Written rules for the agent (AGENTS.md): work only on the assigned task, ask
+    when requirements are unclear, keep solutions simple, and never commit or push
+    without approval.
+  - A state file the agent keeps current so any session can resume the work, and
+    a decision log where each significant decision is recorded with its rationale
+    and Laszlo's approval.
+  - One branch per task; a task counts as done only after its acceptance criteria
+    are verified with real checks (tests, deployed-app checks, browser checks) and
+    Laszlo has reviewed it.
+- Skills demonstrated: writing specifications and acceptance criteria an AI agent
+  can execute, steering and reviewing AI-generated work, LLM application design
+  (prompting, tool calling, streaming), cost and abuse control for a public LLM
+  endpoint, and weighing architecture trade-offs, for example why a per-visitor
+  cap or batched notifications would need external storage on serverless hosting.
+
 ## Personal and Side Projects
 
 Alongside his professional work, Laszlo builds personal projects that show breadth
