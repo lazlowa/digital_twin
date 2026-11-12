@@ -1,5 +1,7 @@
+import pytest
 from fastapi.testclient import TestClient
 
+from app.config import settings
 from app.main import app
 from app.resume import parse_resume
 
@@ -75,3 +77,11 @@ def test_parse_resume_sections() -> None:
         ("Experience", "experience"),
     ]
     assert "<strong>2020 - now</strong>" in resume.sections[0].html
+
+
+def test_preview_badge_only_on_preview(monkeypatch: pytest.MonkeyPatch) -> None:
+    assert "env-badge" not in client.get("/").text
+
+    monkeypatch.setattr(settings, "vercel_env", "preview")
+
+    assert '<div class="env-badge">Preview</div>' in client.get("/").text

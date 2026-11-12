@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  {% if settings.vercel_env == "preview" %}<div class="env-badge">Preview</div>{% endif %}
   <main class="bento">
     <header class="tile tile-hero" style="--i: 0">
       <p class="eyebrow">{{ resume.role }}</p>

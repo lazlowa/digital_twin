@@ -806,3 +806,19 @@ p:last-child {
     transition: none !important;
   }
 }
+
+.env-badge {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #f5b942;
+  border-radius: 999px;
+  background: rgba(60, 40, 5, 0.85);
+  color: #f5b942;
+  font: 600 0.7rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
