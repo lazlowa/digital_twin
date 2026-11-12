@@ -83,5 +83,6 @@ def test_preview_badge_only_on_preview(monkeypatch: pytest.MonkeyPatch) -> None:
     assert "env-badge" not in client.get("/").text
 
     monkeypatch.setattr(settings, "vercel_env", "preview")
+    monkeypatch.setattr(settings, "vercel_git_commit_sha", "abc1234def5678")
 
-    assert '<div class="env-badge">Preview</div>' in client.get("/").text
+    assert '<div class="env-badge">Preview abc1234</div>' in client.get("/").text

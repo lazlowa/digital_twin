@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     trust_proxy_headers: bool = False
     # Set by Vercel: production, preview or development.
     vercel_env: str = ""
+    vercel_git_commit_sha: str = ""
 
 
 settings = Settings()
