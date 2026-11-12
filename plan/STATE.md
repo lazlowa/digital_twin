@@ -2,7 +2,15 @@
 
 ## Current task
 
-None. TID-8 (Fix Preview Deployments) was concluded by the developer on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space.
+TID-10 (Style Polishing), branch `tid-10`, done stepwise on developer instructions. Steps 1 to 3 are committed and pushed to `tid-10` (preview deployment).
+
+## TID-10 (in progress)
+
+- Step 1: removed the "In Numbers" and "Open Source" sections from `data/PROFILE.md` and their styles from `static/style.css`. `.tile-experience` now spans 2 rows (was 3), and education spans full width on tablet. `data/ME.md` still covers pypz for the chat. Verified: `uv run pytest` 36 passed; headless Edge screenshots at 1280 and 900 px show no gaps.
+- Step 2: "Highlights" section in `data/PROFILE.md` right after Profile, text copied literally from `data/ME.md` "Selected Contributions (Highlights)". Full-width tile (`.tile-highlights`, span 4), items in two columns on desktop, one column below 40rem. Verified: 36 tests pass; 1280 px screenshot fine. The 390 px headless screenshot clipped every tile on the right, including unchanged ones, which suggests a headless window-size limit rather than the layout; mobile is not verified in a browser. 
+- Step 3 (developer: keep in PROFILE.md and reword): Highlights rewritten in first person, about half the length, with bold titles (Framework adoption, Distributed systems, Developer enablement, Building teams), key figures as `*...*` rendered in cyan, non-italic, and a pypz link. "30+" is not repeated (already in the profile text). Facts unchanged from ME.md. Styles: `.tile-highlights strong/em/a`. Verified: 36 tests pass; 1280 px screenshot. The developer then refined the pypz item ("the standard in one of Bosch's business units"; the unit is deliberately not named). Committed and pushed to `tid-10` for a preview on developer instruction.
+
+TID-8 (Fix Preview Deployments) was concluded on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space.
 
 ## TID-8 (completed, merged)
 

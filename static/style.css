@@ -148,12 +148,12 @@ p:last-child {
   grid-column: span 1;
 }
 
-.tile-in-numbers {
+.tile-highlights {
   grid-column: span 4;
 }
 
 .tile-experience {
-  grid-row: span 3;
+  grid-row: span 2;
 }
 
 @keyframes rise {
@@ -314,31 +314,37 @@ p:last-child {
   text-transform: uppercase;
 }
 
-/* In numbers */
+/* Highlights */
 
-.tile-in-numbers ul {
+.tile-highlights ul {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.tile-in-numbers li {
+.tile-highlights li {
   color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.4;
+  line-height: 1.55;
 }
 
-.tile-in-numbers strong {
+.tile-highlights strong {
   display: block;
-  margin-bottom: 0.35rem;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tile-highlights em {
+  color: var(--cyan);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.tile-highlights a {
+  color: var(--text);
 }
 
 /* Experience and education: timeline */
@@ -404,42 +410,6 @@ p:last-child {
 .tile-education li {
   font-weight: 600;
   line-height: 1.4;
-}
-
-/* Open source */
-
-.tile-open-source p:first-of-type strong {
-  font-size: 1.6rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.tile-open-source p {
-  color: var(--muted);
-}
-
-.tile-open-source p:first-of-type strong,
-.tile-open-source a {
-  color: var(--text);
-}
-
-.tile-open-source a {
-  display: inline-block;
-  margin-top: 0.25rem;
-  padding: 0.45rem 1rem;
-  font-size: 0.88rem;
-  text-decoration: none;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.tile-open-source a::after {
-  content: " \2197";
-}
-
-.tile-open-source a:hover {
-  border-color: var(--cyan);
 }
 
 /* Toolbox */
@@ -758,8 +728,7 @@ p:last-child {
 
   .tile,
   .tile-hero,
-  .tile-contact,
-  .tile-in-numbers {
+  .tile-contact {
     grid-column: span 2;
   }
 
@@ -767,17 +736,8 @@ p:last-child {
     grid-row: auto;
   }
 
-  .tile-open-source,
-  .tile-education {
-    grid-column: span 1;
-  }
-
   .tile-contact .contact-list {
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  }
-
-  .tile-in-numbers ul {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -786,9 +746,11 @@ p:last-child {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .tile,
-  .tile-open-source,
-  .tile-education {
+  .tile-highlights ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile {
     grid-column: 1 / -1;
   }
 
