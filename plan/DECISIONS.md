@@ -135,3 +135,19 @@ Decision: Confirms "Hosting: Vercel (tentative)" (2026-11-11). The app is hosted
 Rationale: Both open risks were validated on the deployed app: responses stream incrementally (12 to 28 chunks per reply, measured with a Python client via the Vercel URL and the custom domain), and outbound Gmail SMTP works from the Vercel function (the notification email arrived).
 
 Approved by developer: yes (by instructing to conclude TID-7)
+
+## 2026-11-12 | TID-8 | Preview deployments use the production configuration
+
+Decision: Preview deployments get the same environment variables as production in the Vercel Preview environment, including the same model and the same OpenRouter API key, with the default rate limits. Notification emails sent from previews have a `[Preview]` subject prefix, based on `VERCEL_ENV`.
+
+Rationale: Previews then test exactly what production runs. Previews are behind Vercel Authentication, so only the developer uses them, and a separate key or spending limit is not needed. The prefix keeps preview test emails apart from real ones.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-8 | Build and preview badges
+
+Decision: Every Vercel deployment shows a small build badge with the short commit hash (`VERCEL_GIT_COMMIT_SHA`) in the top-left corner, including production. Preview deployments additionally show an amber "Preview" badge. No badges are shown locally.
+
+Rationale: The developer can see at a glance which commit a deployment runs and whether it is a preview.
+
+Approved by developer: yes

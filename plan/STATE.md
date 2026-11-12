@@ -2,7 +2,24 @@
 
 ## Current task
 
-None. TID-7 (Deployment to Vercel) was closed by the developer on 2026-11-12, merged into `main` and pushed. All planned tasks (TID-1 to TID-7) are complete. The site is live at https://lazlowa.space.
+None. TID-8 (Fix Preview Deployments) was concluded by the developer on 2026-11-12, merged into `main` and pushed. The site is live at https://lazlowa.space.
+
+## TID-8 (completed, merged)
+
+- Developer decisions (2026-11-12): previews use the same model and the same OpenRouter key as production (no separate key or spending limit); preview notification emails are sent with a `[Preview]` subject prefix; default rate limits; the agent may push `tid-8` to create the preview.
+- Vercel Preview environment: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `EMAIL_SMTP_SERVER`, `EMAIL_ADDRESS`, `EMAIL_APP_PASSWORD`, `NOTIFY_TO` copied from `.env` without printing values (all non-empty), plus `TRUST_PROXY_HEADERS=true`. Applies to all preview branches.
+- `app/config.py`: `vercel_env` setting (Vercel sets `VERCEL_ENV`). `app/tools.py`: subject prefix `[Preview] ` when `VERCEL_ENV=preview`. Test in `tests/test_tools.py`.
+- `README.md`: deployment steps cover the preview environment and the prefix.
+- Badges (developer request): `templates/index.html` shows fixed pills top-left (`.badges`, `.badge`, `.badge-preview` in `static/style.css`): a build badge with the short commit hash from `VERCEL_GIT_COMMIT_SHA` (`vercel_git_commit_sha` setting) on every Vercel deployment (production and preview), and an amber "Preview" badge only when `VERCEL_ENV=preview`. No badges locally (no commit hash). Test in `tests/test_resume.py`. Verified on https://digital-twin-etw4xkbpy-lazlowas.vercel.app: "Preview" and "0b6089d", matching the `tid-8` HEAD. Production shows the build badge after the merge into `main` (check pending at the time of the merge commit). Branch alias: https://digital-twin-git-tid-8-lazlowas.vercel.app (always the latest `tid-8` commit).
+- Decisions recorded in `plan/DECISIONS.md` (2026-11-12, TID-8).
+- Previews are behind Vercel Authentication (plain request returns 302 to login); tested with `vercel curl`.
+
+## Verification (TID-8, 2026-11-12)
+
+- `uv run pytest`: 36 passed (final, commit 0b6089d). `uv run ruff check .` and `uv run ruff format --check .`: pass.
+- Preview https://digital-twin-48du7r20b-lazlowas.vercel.app (commit on `tid-8`): `/health` returns `{"status":"ok"}`, `/` renders the profile page.
+- Chat on the preview: "What is Laszlo current role?" streamed in 11 reads between 3.19 s and 3.81 s.
+- Unknown question on the preview: "What is Laszlo's favourite dish? (TID-8 preview test)" -> "I'm sorry, I don't know Laszlo's favourite dish...". The developer confirmed the email with the `[Preview]` subject arrived.
 
 ## TID-7 (completed, merged)
 
@@ -103,10 +120,9 @@ None.
 
 ## Later to-do
 
-- Preview deployments have no environment variables (production only), so chat fails on previews. Add them to the preview environment if needed.
 - Optional: GitHub Actions CI (pytest, ruff) before deploys; not part of the plan.
 - Duplicate recording is reduced but not eliminated for repeated unanswerable questions (see verification). If it matters, consider a code guard.
 
 ## Next action
 
-New tasks TID-8 (preview deployments), TID-9 (on hold) and TID-10 (style polishing) were added to `plan/PLAN.md` by the developer. Wait for the developer to assign the next task.
+Wait for the developer to assign the next task. TID-9 is on hold; TID-10 (style polishing) is open.
