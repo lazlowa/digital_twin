@@ -50,10 +50,20 @@ limiter = RateLimiter(
 )
 
 
+def client_ip(request: Request) -> str:
+    if settings.trust_proxy_headers:
+        forwarded = (
+            request.headers.get("x-real-ip")
+            or request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+        )
+        if forwarded:
+            return forwarded
+    return request.client.host if request.client else "unknown"
+
+
 def rate_limit(request: Request) -> None:
     """FastAPI dependency: rejects requests over the per-IP limits with 429."""
-    key = request.client.host if request.client else "unknown"
-    retry_after = limiter.hit(key)
+    retry_after = limiter.hit(client_ip(request))
     if retry_after is not None:
         raise HTTPException(
             status_code=429,

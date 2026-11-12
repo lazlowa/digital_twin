@@ -2,7 +2,26 @@
 
 ## Current task
 
-None. TID-6 (Hardening) was closed by the developer on 2026-11-12, merged into `main` and pushed.
+None. TID-7 (Deployment to Vercel) was closed by the developer on 2026-11-12, merged into `main` and pushed. All planned tasks (TID-1 to TID-7) are complete. The site is live at https://lazlowa.space.
+
+## TID-7 (completed, merged)
+
+- Vercel project `digital-twin` (scope `lazlowas`) created and linked (`.vercel/` and `.env.local` are git-ignored). Production URL: https://digital-twin-sigma-beige.vercel.app
+- `vercel.json`: `framework: fastapi` (required: without it the CLI-created project used the "Other" preset and served only static files, so `/` returned 404), `regions: ["fra1"]`, and a permanent redirect from `www.lazlowa.space` to `https://lazlowa.space`.
+- `app/ratelimit.py`, `app/config.py`, `.env.example`: with `TRUST_PROXY_HEADERS=true` the client IP comes from `X-Real-IP`, then the first `X-Forwarded-For` entry; otherwise the direct connection address. Test in `tests/test_limits.py`.
+- Production environment variables added from `.env` without printing values: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `EMAIL_SMTP_SERVER`, `EMAIL_ADDRESS`, `EMAIL_APP_PASSWORD`, `NOTIFY_TO`, `TRUST_PROXY_HEADERS=true`. Pushover values skipped.
+- GitHub repository connected to the project (`vercel git connect`, after the developer added the GitHub Login Connection and installed the Vercel app on the repo). Pushes to `main` deploy to production.
+- Domains `lazlowa.space` and `www.lazlowa.space`: Namecheap DNS set by the developer (`A @ 216.198.79.1`, `A @ 64.29.17.1`, `CNAME www 4e2a39c3b465bb55.vercel-dns-017.com.`). Vercel reports both configured correctly and issued certificates for both automatically (90 days, auto-renew).
+- `README.md`: deployment section. Decision recorded in `plan/DECISIONS.md` (2026-11-12, TID-7).
+
+## Verification (TID-7, 2026-11-12)
+
+- `uv run pytest`: 34 passed. `uv run ruff check .` and `uv run ruff format --check .`: pass.
+- Build: Python 3.12 (`.python-version`), dependencies from `uv.lock`, one function `fastapi` (15.5 MB) in `fra1`.
+- `GET /` renders the profile page; `/health` and static files return 200.
+- Streaming on Vercel (Python client): 200 `text/plain` with `nosniff`, 28 chunks between 1.45 s and 3.62 s.
+- Gmail SMTP from Vercel: "What is Laszlo's favourite dish? (deployment test)" -> "I'm sorry, I don't know Laszlo's favourite dish...". Logs show two OpenRouter calls (tool round) and no email error. The developer confirmed the email arrived.
+- Custom domain (requests pinned to 216.198.79.1 because the local router still cached the old parking IP 192.64.119.46): `https://lazlowa.space/health` 200 with a valid certificate, `/` renders the page, `https://www.lazlowa.space/about` returns 308 to `https://lazlowa.space/about`, and chat streams (12 chunks between 1.61 s and 2.42 s).
 
 ## TID-6 (completed, merged)
 
@@ -79,10 +98,12 @@ None.
 
 ## Later to-do
 
-- TID-7: behind Vercel the client IP must come from the proxy's forwarding header (`X-Forwarded-For` / `X-Real-IP`). Otherwise all visitors share one rate limit. Locally the direct connection address is used.
+- Browser streaming on the deployed app: verified server-side only (Python client). The developer reached the site on mobile data, but did not report whether replies build up gradually in a browser. The developer's home Wi-Fi still resolved `lazlowa.space` to the old parking IP from the Fritz!Box DNS cache.
+- Preview deployments have no environment variables (production only), so chat fails on previews. Add them to the preview environment if needed.
+- Optional: GitHub Actions CI (pytest, ruff) before deploys; not part of the plan.
 - Browser streaming: on the developer's machine, replies appear at once in Chrome and Edge, although the server streams (Python client: 52 chunks over about 1.8 s). A minimal standalone streaming server was also delivered as one chunk to headless Edge, so local buffering (likely ESET web access protection, not proven) is suspected. The developer deferred this. Re-check on the deployed app (TID-7) and in a browser without ESET filtering.
 - Duplicate recording is reduced but not eliminated for repeated unanswerable questions (see verification). If it matters, consider a code guard.
 
 ## Next action
 
-Wait for the developer to assign the next task (TID-7 starts only on explicit instruction).
+The first push of `main` after TID-7 triggers the first Git-integration production deploy; check it succeeded. Then wait for the developer's next instruction (deferred style and content fine-tuning are listed under open points).

@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     max_response_tokens: int = 1000
     rate_limit_per_minute: int = 10
     rate_limit_per_day: int = 100
+    # Only behind a proxy that sets X-Real-IP / X-Forwarded-For itself (Vercel).
+    trust_proxy_headers: bool = False
 
 
 settings = Settings()

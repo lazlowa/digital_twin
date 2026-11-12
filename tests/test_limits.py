@@ -106,3 +106,25 @@ def test_rate_limiter_day_window() -> None:
         assert limiter.hit("a") is None
         clock.now += 120
     assert limiter.hit("a") == 86400 - 360
+
+
+def test_client_ip_from_proxy_headers_only_when_trusted(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from starlette.requests import Request
+
+    from app.ratelimit import client_ip
+
+    def request(headers: dict[str, str]) -> Request:
+        raw = [(k.encode(), v.encode()) for k, v in headers.items()]
+        return Request({"type": "http", "headers": raw, "client": ("10.0.0.1", 1)})
+
+    forwarded = {"x-forwarded-for": "203.0.113.7, 10.0.0.2"}
+    assert client_ip(request(forwarded)) == "10.0.0.1"
+
+    monkeypatch.setattr(settings, "trust_proxy_headers", True)
+    assert client_ip(request(forwarded)) == "203.0.113.7"
+    assert (
+        client_ip(request({"x-real-ip": "198.51.100.9", **forwarded})) == "198.51.100.9"
+    )
+    assert client_ip(request({})) == "10.0.0.1"

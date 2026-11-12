@@ -119,3 +119,19 @@ Decision: Default limits are 2,000 characters per message, 40 messages of histor
 Rationale: Moderate limits keep normal conversations unaffected while bounding cost per visitor. In-memory counting is simple and sufficient as abuse protection together with an OpenRouter spending limit, although it is only approximate on serverless hosting.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-7 | Vercel deployment setup
+
+Decision: Vercel project `digital-twin`, linked to the GitHub repository through the Git integration (pushes to `main` deploy to production, other branches get previews). Secrets are copied by the agent from the local `.env` into Vercel environment variables with the CLI, without printing them; the unused Pushover values are skipped. The function runs in Frankfurt (`fra1`). The site is served at the custom domain `lazlowa.space` (DNS at Namecheap), with `www.lazlowa.space` redirecting to it.
+
+Rationale: Automatic deploys keep `main` and production in sync. Frankfurt is close to the expected European visitors.
+
+Approved by developer: yes
+
+## 2026-11-12 | TID-7 | Hosting on Vercel confirmed
+
+Decision: Confirms "Hosting: Vercel (tentative)" (2026-11-11). The app is hosted on Vercel and served at https://lazlowa.space.
+
+Rationale: Both open risks were validated on the deployed app: responses stream incrementally (12 to 28 chunks per reply, measured with a Python client via the Vercel URL and the custom domain), and outbound Gmail SMTP works from the Vercel function (the notification email arrived).
+
+Approved by developer: yes (by instructing to conclude TID-7)

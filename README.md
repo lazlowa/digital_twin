@@ -41,3 +41,18 @@ uv run ruff check .
 uv run ruff format --check .
 uv run pytest
 ```
+
+## Deployment (Vercel)
+
+The app runs on Vercel as a single Python function (FastAPI preset, region
+`fra1`), configured in `vercel.json`. `plan/PLAN.md` must be deployed with the
+app because the LLM instructions are read from it.
+
+1. Link the project: `vercel link --project digital-twin`.
+2. Add the variables from `.env.example` as production environment variables
+   (`vercel env add NAME production`), with `TRUST_PROXY_HEADERS=true`.
+3. Deploy: pushes to `main` deploy to production through the Git integration;
+   `vercel deploy --prod` deploys the local working tree manually.
+4. Custom domain: `lazlowa.space` with an `A` record to Vercel and
+   `www.lazlowa.space` as a `CNAME` (see `vercel domains verify <domain>`);
+   `vercel.json` redirects `www` to the apex domain.
