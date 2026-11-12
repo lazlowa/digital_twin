@@ -807,18 +807,29 @@ p:last-child {
   }
 }
 
-.env-badge {
+.badges {
   position: fixed;
   top: 0.75rem;
   left: 0.75rem;
   z-index: 10;
+  display: flex;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+
+.badge {
   padding: 0.2rem 0.6rem;
-  border: 1px solid #f5b942;
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: rgba(60, 40, 5, 0.85);
-  color: #f5b942;
+  background: rgba(6, 9, 20, 0.85);
+  color: var(--muted);
   font: 600 0.7rem/1.4 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  pointer-events: none;
+}
+
+.badge-preview {
+  border-color: #f5b942;
+  background: rgba(60, 40, 5, 0.85);
+  color: #f5b942;
 }
