@@ -70,4 +70,5 @@ Before ending a session or completing a task:
 
 ## IMPORTANT
 
-If you don't know something, admit it and ALWAYS ask for clarification, DO NOT make up anything as a fact.
+- If I ask a question, then ALWAYS answer it before you take any action, DO NOT edit, commit or push anything as part of your answer.
+- If you don't know something, admit it and ALWAYS ask for clarification, DO NOT make up anything as a fact.
