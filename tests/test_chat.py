@@ -85,6 +85,7 @@ def chat_text() -> str:
     with client.stream("POST", "/api/chat", json={"messages": HISTORY}) as response:
         assert response.status_code == 200
         assert response.headers["content-type"].startswith("text/plain")
+        assert response.headers["x-content-type-options"] == "nosniff"
         return "".join(response.iter_text())
 
 

@@ -46,6 +46,8 @@ def test_index_has_chat_widget() -> None:
 
     assert 'id="chat" popover' in response.text
     assert 'popovertarget="chat"' in response.text
+    assert '<script src="/static/chat.js" defer></script>' in response.text
+    assert client.get("/static/chat.js").status_code == 200
 
 
 def test_static_files_are_served() -> None:

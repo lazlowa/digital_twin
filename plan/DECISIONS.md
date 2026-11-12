@@ -103,3 +103,11 @@ Decision: Add a `record_visitor_contact(email, name?, note?)` tool. The twin off
 Rationale: Lets the developer follow up with interested visitors while the app stays stateless. The note informs visitors that conversations may be forwarded.
 
 Approved by developer: yes
+
+## 2026-11-12 | TID-5 | Chat UI behaviour
+
+Decision: Replies are rendered by a small built-in Markdown renderer in vanilla JavaScript (paragraphs, bold, italic, lists, links, inline code), escaping all other content. On first open the panel shows a client-side greeting and three clickable starter questions; the greeting is not sent to the model. The conversation is kept in memory only, so a reload starts a new conversation.
+
+Rationale: Model replies use Markdown, and a small renderer avoids new dependencies while staying safe. Starter questions lower the barrier to start. Memory-only history follows PLAN.md and stores nothing in the browser.
+
+Approved by developer: yes

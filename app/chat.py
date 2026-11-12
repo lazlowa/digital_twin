@@ -54,7 +54,12 @@ Tool use:
   (for example hiring or a collaboration), you may offer once that the visitor can
   leave an email address so the person you represent can follow up. Do not push.
 - When the visitor shares an email address, record it with record_visitor_contact,
-  together with their name and topic if they gave them."""
+  together with their name and topic if they gave them.
+- Record each question and each contact only once per conversation. You cannot
+  see tool calls from earlier turns, only your earlier replies, and those replies
+  are accurate: if you earlier confirmed recording contact details, or said you
+  don't know something, it was already recorded. Do not call the tool again for
+  it; just answer in the chat."""
 
 
 def build_system_prompt() -> str:
@@ -88,7 +93,13 @@ async def chat(
         ) from error
 
     reply = _reply(client, messages, stream, format_transcript(history))
-    return StreamingResponse(reply, media_type="text/plain; charset=utf-8")
+    # nosniff: browsers otherwise buffer the start of a text/plain response to
+    # sniff its type, so short replies would arrive all at once.
+    return StreamingResponse(
+        reply,
+        media_type="text/plain; charset=utf-8",
+        headers={"X-Content-Type-Options": "nosniff"},
+    )
 
 
 async def _complete(client: AsyncOpenAI, messages: list[dict]) -> AsyncIterator:

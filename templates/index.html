@@ -53,15 +53,21 @@
       </div>
       <button class="chat-close" type="button" popovertarget="chat" popovertargetaction="hide" aria-label="Close chat">&times;</button>
     </div>
-    <div class="chat-log" aria-live="polite">
-      <p class="chat-empty">The chat is coming soon.</p>
+    <div class="chat-log" id="chat-log" aria-live="polite">
+      <div class="msg msg-twin"><p>Hi, I'm {{ resume.name.split()[0] }}'s digital twin. Ask me anything about my experience, projects or skills.</p></div>
+      <div class="chat-starters" id="chat-starters">
+        <button type="button">What are you working on now?</button>
+        <button type="button">Tell me about pypz</button>
+        <button type="button">How did you get into data platforms?</button>
+      </div>
     </div>
     <p class="chat-privacy">If the twin can't answer a question or you share your contact details, this conversation is forwarded to {{ resume.name.split()[0] }} by email.</p>
-    <form class="chat-form" onsubmit="return false">
+    <form class="chat-form" id="chat-form">
       <label class="visually-hidden" for="chat-input">Your question</label>
-      <input id="chat-input" type="text" placeholder="What did you build with Kafka?" disabled>
-      <button type="submit" disabled>Send</button>
+      <textarea id="chat-input" rows="1" placeholder="Ask me something..."></textarea>
+      <button type="submit" id="chat-send" disabled>Send</button>
     </form>
   </div>
+  <script src="/static/chat.js" defer></script>
 </body>
 </html>

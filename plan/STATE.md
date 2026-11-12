@@ -2,7 +2,33 @@
 
 ## Current task
 
-None. TID-4 was closed by the developer on 2026-11-12, merged into `main` and pushed, together with the developer's PLAN.md edit that extends TID-4.
+None. TID-5 (Chat UI) was closed by the developer on 2026-11-12, merged into `main` and pushed.
+
+## TID-5 (completed)
+
+- `static/chat.js` (vanilla JS, loaded with `defer`): keeps the history in memory and sends it to `/api/chat`. It reads the reply stream with `TextDecoderStream` and re-renders the reply with a minimal Markdown renderer on every chunk (paragraphs, lists, headings as bold, bold, italic, inline code, http(s)/mailto links; all other content is escaped). A typing indicator shows while waiting. Send is disabled while a reply is in progress or the input is empty. Enter sends, Shift+Enter adds a new line. On error it shows "Sorry, something went wrong. Please try again in a moment.", removes the failed question from the history, and puts it back into the input. The input is focused when the panel opens. Starter chips are removed after the first question.
+- `templates/index.html`: client-side greeting, three starter questions, a textarea input, and the script tag.
+- `static/style.css`: message bubbles, error style, typing dots, starter chips, an auto-growing textarea (`field-sizing: content`), and a larger panel (26rem x 40rem max).
+- `app/chat.py`: the stream response sends `X-Content-Type-Options: nosniff`, because Chromium otherwise buffers the start of `text/plain` responses for MIME sniffing. Test added in `tests/test_chat.py`. Its effect could not be observed here (see the blocker).
+- `tests/test_resume.py`: the page includes `/static/chat.js` and the file is served.
+- Decision recorded in `plan/DECISIONS.md` (2026-11-12, TID-5).
+- `app/chat.py` `TOOL_GUIDANCE` (TID-4 behaviour, found by the developer while testing TID-5): record each question and contact only once per conversation. The model cannot see earlier tool calls because the client history contains only visible text, so the rule states that its earlier replies are accurate evidence of recording. Developer chose a prompt rule over a code guard (2026-11-12).
+- Mobile: the panel covers almost the whole screen at phone width. The developer accepted this as the standard mobile chat pattern (closable via the x button, Esc/back, or the launcher).
+
+## Verification (TID-5, 2026-11-12)
+
+- `uv run pytest`: 20 passed. `uv run ruff check .` and `uv run ruff format --check .`: pass. `node --check static/chat.js`: OK.
+- Markdown renderer exercised in Node: lists, headings, bold, italic, code, links render; `<script>`, quotes, and `javascript:` links are escaped or left as text; `2*3*4` is not italicised.
+- Headless Edge driven over CDP against the local server with the real OpenRouter API (scratch script, not in the repo):
+  - The panel opens, the input is focused, and Send is disabled for empty input.
+  - Starter chip -> reply rendered, chips removed. Send stayed disabled while the reply was pending, even with text in the input, and was enabled afterwards.
+  - Follow-up sent with Enter: the 2nd request carried roles `user, assistant, user`, so earlier turns are sent as context. A reply rendered list/bold Markdown.
+  - Whitespace-only input: Send disabled, no message added.
+  - Simulated 502: the error message is shown, the question is restored to the input, and nothing extra is added to the history.
+  - 390px mobile emulation: `scrollWidth` 390 = `innerWidth` 390; the panel fits (16-374 px).
+- Developer check (Chrome and Edge, 2026-11-12): earlier context is used in follow-ups; phone emulation works (panel nearly full-screen, accepted); the reply appeared at once (see Later to-do).
+- Duplicate recording, checked with the real model and email sending replaced by a log line (scratch harness): before the rule, "Did you record my email already?" sent a second contact email and the twin falsely said it had not saved the details. With the final rule: contact scenario 3/3 runs sent one email and answered truthfully; asking the same unanswerable question twice sent one email in 2/3 runs and two in 1/3.
+- Streaming in the browser: the server streams (a Python client received 52 chunks over about 1.8 s), but headless Edge received each reply as a single network chunk. A minimal standalone Python server streaming 10 chunks 300 ms apart showed the same behaviour in Edge (one chunk after 3 s), so something on this machine buffers browser HTTP traffic. ESET Security (web access protection) is installed and is the likely cause, though this is not proven. `--no-proxy-server` did not help, and no system proxy is set.
 
 ## Completed
 
@@ -33,6 +59,11 @@ None. TID-4 was closed by the developer on 2026-11-12, merged into `main` and pu
 
 None.
 
+## Later to-do
+
+- Browser streaming: on the developer's machine, replies appear at once in Chrome and Edge, although the server streams (Python client: 52 chunks over about 1.8 s). A minimal standalone streaming server was also delivered as one chunk to headless Edge, so local buffering (likely ESET web access protection, not proven) is suspected. The developer deferred this. Re-check on the deployed app (TID-7) and in a browser without ESET filtering.
+- Duplicate recording is reduced but not eliminated for repeated unanswerable questions (see verification). If it matters, consider a code guard.
+
 ## Next action
 
-Wait for the developer to assign the next task (TID-5 starts only on explicit instruction).
+Wait for the developer to assign the next task (TID-6 starts only on explicit instruction).
