@@ -57,6 +57,16 @@ Before ending a session or completing a task:
    IMPORTANT - You must not commit and push anything unless instructed by the developer
 4. The developer will review and etl. instruct you with further actions
 
+#### Shorthand instructions
+
+- "push for preview": commit the task's changes on the task branch and push it,
+  then verify the Vercel preview deployment of that commit.
+- "conclude TID-X": verify the acceptance criteria, update STATE.md (task
+  completed, next action), record pending decisions in DECISIONS.md if approved,
+  commit on the task branch, merge it into main with a fast-forward merge, push
+  both branches, and verify the production deployment (build id in the footer).
+- PLAN.md is committed only when the developer says so.
+
 ## Coding Standards
 
 1. Use current stable library versions and idiomatic approaches.

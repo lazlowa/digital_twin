@@ -270,22 +270,30 @@ Albert-Einstein-Straße 47
 Some more content optimization is necessary.
 
 Findings:
-- § 18 (1) MStV is still on the Legal notice. It’s harmless, but probably unnecessary unless you publish editorial content.
 - No Open Graph tags, so a link shared on LinkedIn still gets no proper preview. This is the most useful remaining fix before your announcement post.
 - No favicon declared (new finding). Browser tabs and bookmarks show a generic icon. A simple “LA” icon in your accent colors would fit.
 - Meta description is still just the tagline.
 - Privacy details: the model provider is still unnamed, and you could name the relevant data protection authority.
 
-Additionally:
-- Add CV download
-- open to work with date and details (relocation etc.)
-
-Tasks for the developer
-- Extend profile with concrete projects and topics/tasks
-- Add home projects, hobbies
-- Adapt profile texts
-
-
 ### Acceptance Criteria
 
 - Findings fixed.
+
+## TID-15 Add CV download link
+
+### Description
+
+A CV download link shall be created:
+
+- CV will be copied to `static\CV_vX.pdf`, where vX is the version number, which will be incremented upon update to prevent caching issues
+- Add a second button next to "Ask my digital twin", for example "Download CV" as secondary and less emphasized button
+- The file name for the CV shall be `ANKA_Laszlo_CV.pdf` without version or anything else
+- Tell the twin about it in ME.md, so it can point visitors to the download.
+- Make sure, if CV is updated and overwritten, then the updated one will be served.
+- For test purposes, create a dummy pdf file, which the developer can replace after that
+
+### Acceptance Criteria
+
+- Added download button.
+- Upon activating the link, the CV shall be downloaded-
+- The chatbot shall know about it and refer to it upon question
