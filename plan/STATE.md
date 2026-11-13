@@ -2,16 +2,18 @@
 
 ## Current task
 
-TID-12 (Impressum), branch `tid-12`, uncommitted (developer: local check first, no commit). Steps 1 to 3 done. Step 4: on developer instruction the texts are in `data/LEGAL.md` and `data/PRIVACY.md` and served as separate pages `/legal` and `/privacy`, linked from the footer and the chat note. Committed and pushed to `tid-12` for a preview on developer instruction; step 5 (English sufficiency) still to report. TID-11 was concluded on 2026-11-12 and merged; the site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+None. TID-12 (Impressum) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
 
-## TID-12 (in progress)
+## TID-12 (completed, merged)
 
 - Developer decisions (2026-11-13): privacy notice and Impressum both in scope; legal texts in English (step 5 checks whether that suffices); the address is left out for now; footer has copyright; build id links to its commit; amber Preview badge stays; local check first, no commit; stop after step 3.
 - Steps 1-2: `templates/index.html` footer (`.site-footer`) with "(c) <current year> <name>" and, on Vercel deployments, "Build <short sha>" linking to `<repository_url>/commit/<sha>` (`repository_url` setting in `app/config.py`, `year` in the `app/main.py` page context). The build badge is removed; the Preview badge is a standalone `.badge-preview`. `.bento` bottom padding reduced to 2rem; the footer keeps 6rem for the chat launcher. Tests in `tests/test_resume.py`. Verified: 39 tests pass, ruff clean; headless Edge screenshot (1280 px, simulated preview build) shows the Preview badge and the footer.
 - Step 3 research (reported to the developer, not legal advice): GDPR privacy notice very likely required (household exemption does not cover a public professional site; Art. 13 items; the chat note alone does not meet them). Impressum: § 18 Abs. 1 MStV likely applies (not exclusively personal), requiring name and a serviceable postal address; § 5 DDG possibly (indirect economic purpose). Omitting the address would leave it incomplete; c/o address or mail-box services are options. English is acceptable when the site is in English. Labels "Legal notice"/"Privacy", reachable in at most two clicks; footer links are fine.
 - Decisions recorded in `plan/DECISIONS.md` (2026-11-13, TID-12): legal notice without postal address for now (to be added later), full privacy notice in English.
 - Step 4 implementation: `data/LEGAL.md` (name, Germany, email; no address per decision) and `data/PRIVACY.md` (retention of forwarded emails: one month, developer decision). `app/resume.py` `load_page()` renders a data file; `app/main.py` routes `/legal` and `/privacy` with `templates/page.html`; shared partials `templates/_footer.html` (copyright, Legal notice, Privacy, build link) and `templates/_badge.html` (Preview badge). The chat note ends with a "Privacy" link. Styles: `.footer-links`, `.legal` in `static/style.css`. Tests in `tests/test_resume.py`: 42 pass, ruff clean. Screenshots of both pages at 1280 px look right.
-- New tabs (developer approved the agent's recommendation): links to other sites open in a new tab (`target="_blank" rel="noopener"`): contact card links (`templates/index.html`), the footer build link (`templates/_footer.html`), and http(s) links rendered from the data Markdown files (`link_open` rule in `app/resume.py`). The chat note's Privacy link opens a new tab so the in-memory conversation is kept. Footer Legal notice/Privacy, the Back link and mailto links stay in the same tab. Chat reply links already opened in a new tab (`static/chat.js`). Uncommitted; 43 tests pass.
+- New tabs (developer approved the agent's recommendation): links to other sites open in a new tab (`target="_blank" rel="noopener"`): contact card links (`templates/index.html`), the footer build link (`templates/_footer.html`), and http(s) links rendered from the data Markdown files (`link_open` rule in `app/resume.py`). The chat note's Privacy link opens a new tab so the in-memory conversation is kept. Footer Legal notice/Privacy, the Back link and mailto links stay in the same tab. Chat reply links already opened in a new tab (`static/chat.js`). Final: 43 tests pass, ruff clean.
+- Step 5: English is sufficient because the whole site is in English (step 3 sources); relying on browser translation is not needed.
+- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): legal texts as separate pages `/legal` and `/privacy` linked from the footer (placement option chosen by the agent, accepted by the developer); external links open in a new tab.
 - Facts in the privacy text: Vercel says it is EU-U.S. DPF certified (its changelog and docs; one third-party blog disagreed); OpenRouter's policy relies on SCCs; Google is assumed DPF certified (not looked up in this session). Not verified: which providers OpenRouter routes `anthropic/claude-haiku-5.5` to (the text says "a provider of the AI model"). The developer agreed to check that OpenRouter input/output logging is off and the Vercel runtime log retention ("about one hour" in the text).
 
 ## TID-11 (completed, merged)
@@ -148,6 +150,8 @@ TID-12 (Impressum), branch `tid-12`, uncommitted (developer: local check first, 
 - PLAN.md wording fixed by the agent with one-time developer permission (2026-11-12): TID-1 lists the `EMAIL_*` settings, TID-2 describes `data/PROFILE.md` and the bento page, and TID-4 says SMTP (Gmail) and "both tools". The quoted instruction block was not changed.
 - Deferred: font alternatives (Plus Jakarta Sans, Manrope, Space Grotesk, Sora) were offered and not taken up. The `data/PROFILE.md` copy was reviewed and adjusted by the developer in TID-10.
 - Mobile layout after TID-10 is not verified in a real browser.
+- Legal notice: postal address still to be added (c/o address or mail-box service as options); until then it is incomplete.
+- Privacy notice facts to confirm: OpenRouter input/output logging is off and Vercel runtime log retention ("about one hour" in the text) (developer); Google's DPF certification and the providers OpenRouter routes the model to (not verified).
 
 ## Blockers
 
@@ -164,4 +168,4 @@ None.
 
 ## Next action
 
-TID-12: wait for the developer's decision on the step 3 report, then step 4 (proposals for both texts and their placement). Earlier note: TID-12 (Impressum and footer; agreed so far: Impressum and privacy notice handled separately, the Preview badge stays, the build id moves to a discreet footer, legal research is reported before any text is written, language of the legal texts still open). TID-9 is on hold; TID-11 removed its contact half, so the developer may reduce or close it. TID-1 to TID-8, TID-10 and TID-11 are complete.
+Wait for the developer to assign the next task. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-12 are complete.
