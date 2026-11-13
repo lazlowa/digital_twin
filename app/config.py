@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     repository_url: str = "https://github.com/lazlowa/digital_twin"
     # Public address of the site, used for absolute URLs in link previews.
     site_url: str = "https://lazlowa.space"
+    # Shows the "Download CV" button and tells the twin about it.
+    cv_download_enabled: bool = False
 
 
 settings = Settings()

@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.chat import router as chat_router
 from app.config import settings
-from app.resume import load_page, load_resume
+from app.resume import find_cv, load_page, load_resume
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -29,7 +29,8 @@ def page_context(**extra) -> dict:
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request, "index.html", page_context())
+    context = page_context(cv=find_cv() if settings.cv_download_enabled else None)
+    return templates.TemplateResponse(request, "index.html", context)
 
 
 @app.get("/legal", response_class=HTMLResponse)

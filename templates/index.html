@@ -30,7 +30,10 @@
       <h1>Hi, I'm {{ resume.name.split()[0] }}.</h1>
       <p class="tagline">{{ resume.tagline }}</p>
       <div class="profile">{{ resume.profile_html | safe }}</div>
-      <button class="cta" type="button" popovertarget="chat">Ask my digital twin</button>
+      <div class="actions">
+        <button class="cta" type="button" popovertarget="chat">Ask my digital twin</button>
+        {% if cv %}<a class="cta-secondary" href="/static/{{ cv }}" download="ANKA_Laszlo_CV.pdf">Download CV</a>{% endif %}
+      </div>
     </header>
 
     <aside class="tile tile-contact" style="--i: 1" aria-label="Contact">

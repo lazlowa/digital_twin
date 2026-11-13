@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 
 from app.config import settings
 from app.main import app
-from app.resume import load_page, load_resume, parse_resume
+from app.resume import find_cv, load_page, load_resume, parse_resume
 
 client = TestClient(app)
 
@@ -171,3 +171,32 @@ def test_preview_badge_only_on_preview(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(settings, "vercel_env", "preview")
     for path in ("/", "/legal"):
         assert '<div class="badge-preview">Preview</div>' in client.get(path).text
+
+
+def test_find_cv_picks_highest_version(tmp_path: Path) -> None:
+    assert find_cv(tmp_path) is None
+
+    for name in ["CV_v2.pdf", "CV_v10.pdf", "CV_v9.pdf", "CV_vx.pdf", "other.pdf"]:
+        (tmp_path / name).write_bytes(b"%PDF")
+
+    assert find_cv(tmp_path) == "CV_v10.pdf"
+
+
+def test_cv_download_button(monkeypatch: pytest.MonkeyPatch) -> None:
+    cv = find_cv()
+    assert cv is not None
+    monkeypatch.setattr(settings, "cv_download_enabled", False)
+    assert "Download CV" not in client.get("/").text
+
+    monkeypatch.setattr(settings, "cv_download_enabled", True)
+    page = client.get("/").text
+    assert (
+        f'<a class="cta-secondary" href="/static/{cv}" '
+        'download="ANKA_Laszlo_CV.pdf">Download CV</a>'
+    ) in page
+    response = client.get(f"/static/{cv}")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/pdf"
+
+    monkeypatch.setattr("app.main.find_cv", lambda: None)
+    assert "Download CV" not in client.get("/").text

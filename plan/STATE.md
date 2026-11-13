@@ -2,7 +2,19 @@
 
 ## Current task
 
-None. TID-14 (Content Fine-Tuning) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin. TID-13 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
+None. TID-15 (Add CV download link) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+
+## TID-15 (completed, merged)
+
+- Developer decisions (2026-11-13): versioned file `static/CV_v<N>.pdf` (the developer deletes the old version when adding a new one); download name `ANKA_Laszlo_CV.pdf`; secondary, less emphasised button next to "Ask my digital twin"; a placeholder PDF may be merged.
+- `app/main.py` `find_cv()` returns the highest `CV_v<N>.pdf` in `static/` (non-numeric versions ignored); the index page passes it as `cv`. `templates/index.html`: `.actions` row with the chat button and `<a class="cta-secondary" href="/static/<cv>" download="ANKA_Laszlo_CV.pdf">Download CV</a>`, hidden when no CV exists. Styles in `static/style.css`.
+- `static/CV_v1.pdf`: hand-built one-page placeholder PDF ("Placeholder CV - Laszlo Anka..."), xref offsets verified. `.gitattributes`: `*.pdf binary`, so Git's line-ending conversion cannot corrupt PDFs.
+- Flag (developer request, option a approved): `CV_DOWNLOAD_ENABLED` setting (`app/config.py`, default false, `.env.example`). The button is shown only when the flag is true and a CV exists. The CV note for the twin moved from `data/ME.md` into `CV_NOTE` in `app/chat.py` and is added to the system prompt only under the same condition, so the twin never mentions a hidden button (deviation from "tell the twin in ME.md", approved by the developer). `find_cv()` moved to `app/resume.py`. The PDF stays reachable at its URL while the flag is off (blocking not requested). On Vercel the variable takes effect with the next deployment.
+- `README.md`: how the CV and the legal texts are maintained.
+- Acceptance criteria: the download button exists and downloads the PDF as `ANKA_Laszlo_CV.pdf` (download attribute; the saved name was not checked in a real browser); the twin refers to it when asked. In production the button stays hidden until the developer sets `CV_DOWNLOAD_ENABLED=true` in Vercel (takes effect with the next deployment) and replaces the placeholder `static/CV_v1.pdf`.
+- Decision recorded in `plan/DECISIONS.md` (2026-11-13, TID-15): CV download behind a flag.
+- `data/ME.md` (developer content, wording fixed by the agent on instruction): the Availability paragraph now includes preferred work arrangements (hybrid up to 2, at most 3 on-site days within about 250 km, e.g. Munich, Frankfurt, Zurich, Zurich preferred; fully on-site only in the Heilbronn region). The separate section the developer added at the end was merged into it. Live check with `MAX_QUESTION_EMAILS_PER_DAY=0`: Munich and "on-site in Stuttgart from February 2027" answered correctly from the document, without speaking for his interest. Developer request: a question about a specific city is answered only for that city; the Zurich preference is mentioned only for general questions (note for the twin next to the preference in ME.md). Re-checked live (cap 0): Munich and Frankfurt answers no longer mention Zurich; "maximum distance" mentions the preference.
+- Verified: 49 tests pass (version selection, button markup, PDF served as application/pdf, button hidden without a CV or with the flag off, CV note in the prompt only with the flag on), ruff clean; hero screenshot at 1280 px; live twin: "Can I get Laszlo's CV?" -> points to the "Download CV" button, no tool call. Not verified: the saved file name in a real browser download (headless cannot show it).
 
 ## TID-14 (completed, merged)
 
@@ -188,4 +200,4 @@ None.
 
 ## Next action
 
-Next: TID-15 (CV download link) on a new branch `tid-15` when the developer instructs. Agreed so far: versioned file `static/CV_v<N>.pdf`, the page links the highest version found (button hidden if none), download name `ANKA_Laszlo_CV.pdf`, secondary button next to "Ask my digital twin", a placeholder PDF may be merged, ME.md mentions the download. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-14 are complete.
+Wait for the developer to assign the next task. Developer to-dos: replace the placeholder CV (`static/CV_v2.pdf`, delete `CV_v1.pdf`) and set `CV_DOWNLOAD_ENABLED=true` in Vercel. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-15 are complete.

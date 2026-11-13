@@ -215,3 +215,11 @@ Decision: Supersedes "Legal notice (Impressum) without postal address for now" (
 Rationale: Completes the legal notice with a serviceable address, as § 18 Abs. 1 MStV requires, while keeping the home address private. The provider's terms grant the power of service and state that court and lawyer mail is forwarded without delay.
 
 Approved by developer: yes
+
+## 2026-11-13 | TID-15 | CV download behind a flag
+
+Decision: The page offers a "Download CV" button next to "Ask my digital twin" that links the highest `static/CV_v<N>.pdf` (a new version number gives a new URL, so cached copies are not served; the developer deletes the old version) and saves it as `ANKA_Laszlo_CV.pdf`. The button and the twin's note about it are shown only when `CV_DOWNLOAD_ENABLED` is true (default false). The note lives in `app/chat.py` instead of `data/ME.md`, so the twin never mentions a hidden button. A placeholder PDF is merged until the developer adds the real CV.
+
+Rationale: The developer wants recruiters to get a PDF, but not before the CV is final; one switch keeps the page and the twin consistent.
+
+Approved by developer: yes

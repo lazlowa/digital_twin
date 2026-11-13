@@ -7,7 +7,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import tools
-from app.chat import ME_PATH, get_client, load_instructions
+from app.chat import (
+    CV_NOTE,
+    ME_PATH,
+    build_system_prompt,
+    get_client,
+    load_instructions,
+)
+from app.config import settings
 from app.main import app
 
 
@@ -105,6 +112,14 @@ def test_system_prompt_contains_instructions_and_me_md(fake: FakeClient) -> None
     assert ME_PATH.read_text(encoding="utf-8") in system["content"]
     assert history == HISTORY
     assert fake.requests[0]["stream"] is True
+
+
+def test_twin_mentions_cv_only_when_enabled(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "cv_download_enabled", False)
+    assert CV_NOTE not in build_system_prompt()
+
+    monkeypatch.setattr(settings, "cv_download_enabled", True)
+    assert CV_NOTE in build_system_prompt()
 
 
 def test_streamed_output_is_passed_through(fake: FakeClient) -> None:

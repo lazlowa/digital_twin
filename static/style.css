@@ -273,6 +273,35 @@ p:last-child {
   content: " \2192";
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.actions .cta {
+  margin-top: 0;
+}
+
+.cta-secondary {
+  position: relative;
+  z-index: 1;
+  padding: 0.8rem 1.4rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.cta-secondary:hover {
+  color: var(--text);
+  border-color: var(--cyan);
+}
+
 .cta:hover,
 .chat-launcher:hover {
   transform: translateY(-2px);

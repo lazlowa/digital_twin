@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from app.config import settings
 from app.ratelimit import client_ip, rate_limit
+from app.resume import find_cv
 from app.tools import TOOLS, format_transcript, run_tool
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -77,10 +78,17 @@ Tool use:
   call the tool again for it; just answer in the chat."""
 
 
+CV_NOTE = """\
+Visitors can download the CV of the person you represent as a PDF with the
+"Download CV" button next to "Ask my digital twin" at the top of this page."""
+
+
 def build_system_prompt() -> str:
     knowledge = ME_PATH.read_text(encoding="utf-8")
+    # The twin mentions the CV only while the button is shown.
+    cv_note = f"{CV_NOTE}\n\n" if settings.cv_download_enabled and find_cv() else ""
     return (
-        f"{load_instructions()}\n\n{TOOL_GUIDANCE}\n\n"
+        f"{load_instructions()}\n\n{TOOL_GUIDANCE}\n\n{cv_note}"
         "Everything you know about the person you represent is in the following "
         f"document.\n\n{knowledge}"
     )
