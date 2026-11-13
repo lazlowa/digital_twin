@@ -35,6 +35,10 @@ an architecture end to end or going deep into implementation.
 Current focus: enabling AI-assisted software development across business units and
 solving technical problems for teams without dedicated developers.
 
+Availability: Laszlo is leaving Bosch and is currently in his exit period; his
+employer knows. He is open to new roles from April 2027. Questions about specific
+roles, conditions or his interest in an offer are for Laszlo to answer directly.
+
 ## Core Competencies
 
 - Systems and software architecture: decomposing complex problems into

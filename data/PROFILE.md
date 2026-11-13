@@ -2,8 +2,9 @@
 
 - Name: Laszlo Anka
 - Role: Software & Systems Architect
-- Tagline: I build the data platforms other teams build on.
+- Tagline: Architect by role, builder at heart.
 - Description: Laszlo Anka, software and systems architect: data platforms, distributed computing, cloud and AI-assisted development. Ask his digital twin about his career and projects.
+- Availability: Open to new roles from April 2027
 - Location: Germany
 - Email: laszlo.anka@gmail.com
 - LinkedIn: linkedin.com/in/laszlo-anka
@@ -13,11 +14,7 @@
 
 ## Profile
 
-Twenty years ago I was teaching cameras to judge distance. Today I design
-event-driven data platforms on Kubernetes and help teams ship faster with
-AI-assisted development. In between I built an AI group of 30+ people from
-scratch. I like owning the architecture and still getting my hands dirty in the
-code, and I prefer simple solutions that actually get built.
+I still remember how my IT teacher got me hooked on programming when I was twelve. I saw it as an art of creation then, and I still do. What satisfies me most is building something that others find useful and valuable. Today I design and build solutions for industrial-scale needs: moving, processing and maintaining huge volumes of data. Along the way I had the privilege of leading people: a computer vision team of 15 and an AI group of 45. I like owning the architecture and still writing the code, and I prefer simple solutions that actually get built. In everything I do, honest human values matter most to me.
 
 ## Highlights
 

@@ -23,7 +23,10 @@
   {% include "_badge.html" %}
   <main class="bento">
     <header class="tile tile-hero" style="--i: 0">
-      <p class="eyebrow">{{ resume.role }}</p>
+      <div class="pills">
+        <p class="eyebrow">{{ resume.role }}</p>
+        {% if resume.availability %}<p class="eyebrow eyebrow-available">{{ resume.availability }}</p>{% endif %}
+      </div>
       <h1>Hi, I'm {{ resume.name.split()[0] }}.</h1>
       <p class="tagline">{{ resume.tagline }}</p>
       <div class="profile">{{ resume.profile_html | safe }}</div>

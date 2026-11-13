@@ -206,6 +206,22 @@ p:last-child {
   box-shadow: 0 0 10px var(--cyan);
 }
 
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.eyebrow-available {
+  color: var(--text);
+  border-color: rgba(52, 211, 153, 0.45);
+}
+
+.eyebrow-available::before {
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+}
+
 .tile-hero h1 {
   margin: 0;
   font-size: clamp(2.75rem, 7vw, 5.25rem);

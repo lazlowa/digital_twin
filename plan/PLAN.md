@@ -262,3 +262,30 @@ Albert-Einstein-Straße 47
 
 - Address is now in impressum and in privacy notice
 
+
+## TID-14 Content Fine-Tuning
+
+### Description
+
+Some more content optimization is necessary.
+
+Findings:
+- § 18 (1) MStV is still on the Legal notice. It’s harmless, but probably unnecessary unless you publish editorial content.
+- No Open Graph tags, so a link shared on LinkedIn still gets no proper preview. This is the most useful remaining fix before your announcement post.
+- No favicon declared (new finding). Browser tabs and bookmarks show a generic icon. A simple “LA” icon in your accent colors would fit.
+- Meta description is still just the tagline.
+- Privacy details: the model provider is still unnamed, and you could name the relevant data protection authority.
+
+Additionally:
+- Add CV download
+- open to work with date and details (relocation etc.)
+
+Tasks for the developer
+- Extend profile with concrete projects and topics/tasks
+- Add home projects, hobbies
+- Adapt profile texts
+
+
+### Acceptance Criteria
+
+- Findings fixed.

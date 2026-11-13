@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 
 from app.config import settings
 from app.main import app
-from app.resume import load_page, parse_resume
+from app.resume import load_page, load_resume, parse_resume
 
 client = TestClient(app)
 
@@ -16,6 +16,7 @@ SAMPLE = """## Identity
 - Role: Engineer
 - Tagline: I build things.
 - Description: Jane, an engineer.
+- Availability: Open to work
 - Email: jane@example.com
 - GitHub: github.com/jane
 - Location: Berlin
@@ -33,10 +34,12 @@ Jane builds **systems**.
 def test_index_renders_profile_md() -> None:
     response = client.get("/")
 
+    resume = load_resume()
     assert response.status_code == 200
-    assert "Laszlo Anka" in response.text
-    assert "I build the data platforms other teams build on." in response.text
-    assert "Twenty years ago" in response.text
+    assert resume.name in response.text
+    assert f'<p class="tagline">{resume.tagline}</p>' in response.text
+    assert resume.profile_html in response.text
+    assert f"{resume.availability}</p>" in response.text
     assert "<h2>Experience</h2>" in response.text
 
 
@@ -97,6 +100,7 @@ def test_parse_resume_identity() -> None:
     assert resume.role == "Engineer"
     assert resume.tagline == "I build things."
     assert resume.description == "Jane, an engineer."
+    assert resume.availability == "Open to work"
     assert [(link.label, link.href) for link in resume.links] == [
         ("Email", "mailto:jane@example.com"),
         ("GitHub", "https://github.com/jane"),
