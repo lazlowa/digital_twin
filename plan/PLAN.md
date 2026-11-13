@@ -200,3 +200,48 @@ Based on directly prompted instructions, multiple style variants shall be evalua
 ### Acceptance Criteria
 
 - developer accepts the changes
+
+## TID-11 Remove contact notification
+
+### Description
+
+After some testing, I realized that allowing the visitor to register an email and then sending a notification is not necessary. If the visitor wants
+to contact, the email address is right away on the side. Hence this task is about removing the entire email registration and notification functionality.
+The notification on unanswerable questions shall remain intact.
+
+### Acceptance Criteria
+
+- Visitor prompting for contact with email address shall be gently pointed to the contact panel, so they can contact me via email
+- No email registration and tool usage on email provision shall take place
+- Unanswerable questions shall still emit notification email each time with a cap of 10
+
+## TID-12 Impressum
+
+### Description
+
+Appearently, there is a regulation in EU to provide an impressum and privacy note. 
+We already provide a privacy note on the chat interface, however it shall be checked, whether that fulfills all regulation
+This task contains the following steps:
+
+1) Create a footer on the side
+2) Move the build id from the badge into the footer.
+3) Research on the internet, whether and how it is required to have a privacy note and an impressum, prompt the developer with your response before moving to the next step.
+4) If it is regulatory requirement, give proposals for both impressum and privacy note.
+5) Check, if the legal text can be in English and the side can rely on browser's translate functionality
+
+If impressum is required, the address will be left out for now for privacy reasons.
+
+Since this is a SPA, how the impressum text will blend in is subject of discussion. Give the developer proposals and an option to choose.
+
+Footer shall contain copyright information.
+
+Build id notice shall link back to the specific commit.
+
+### Acceptance Criteria
+
+- Footer implemented
+- No more build badge, the build id moved to the footer (displayed discretely)
+- Eventually, privacy note and impressum text is on the page in English
+- Amber preview badge shall remain intact
+- Privacy note and impressum texts shall be maintained in their own file in `data` folder
+- The side shall load the note texts at startup

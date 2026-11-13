@@ -19,6 +19,18 @@ PROFILE_SECTION = "Profile"
 _markdown = MarkdownIt("commonmark")
 
 
+def _render_link_open(self, tokens, idx, options, env) -> str:
+    # Links to other sites open in a new tab, so visitors keep this page.
+    token = tokens[idx]
+    if str(token.attrGet("href")).startswith(("http://", "https://")):
+        token.attrSet("target", "_blank")
+        token.attrSet("rel", "noopener")
+    return self.renderToken(tokens, idx, options, env)
+
+
+_markdown.add_render_rule("link_open", _render_link_open)
+
+
 @dataclass
 class Link:
     label: str

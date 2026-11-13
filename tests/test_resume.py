@@ -100,8 +100,20 @@ def test_footer_shows_copyright_and_build_link(
 def test_footer_and_chat_note_link_to_legal_pages() -> None:
     page = client.get("/").text
 
+    # Footer links stay in the same tab; the chat note opens a new one so the
+    # conversation, kept only in memory, is not lost.
     assert '<a href="/legal">Legal notice</a>' in page
-    assert page.count('<a href="/privacy">Privacy</a>') == 2
+    assert '<a href="/privacy">Privacy</a>' in page
+    assert '<a href="/privacy" target="_blank" rel="noopener">Privacy</a>' in page
+
+
+def test_external_links_open_in_new_tab() -> None:
+    page = client.get("/").text
+
+    new_tab = 'target="_blank" rel="noopener"'
+    assert f'<a href="https://github.com/lazlowa" {new_tab}>' in page
+    assert f'<a href="https://github.com/lazlowa/pypz-python" {new_tab}>' in page
+    assert '<a href="mailto:laszlo.anka@gmail.com">' in page
 
 
 @pytest.mark.parametrize(

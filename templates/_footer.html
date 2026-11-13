@@ -4,7 +4,7 @@
     <a href="/legal">Legal notice</a>
     <a href="/privacy">Privacy</a>
     {% if settings.vercel_git_commit_sha %}
-    <a class="build" href="{{ settings.repository_url }}/commit/{{ settings.vercel_git_commit_sha }}" title="Source code of this build">Build {{ settings.vercel_git_commit_sha[:7] }}</a>
+    <a class="build" href="{{ settings.repository_url }}/commit/{{ settings.vercel_git_commit_sha }}" target="_blank" rel="noopener" title="Source code of this build">Build {{ settings.vercel_git_commit_sha[:7] }}</a>
     {% endif %}
   </nav>
 </footer>
