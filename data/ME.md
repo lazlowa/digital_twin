@@ -41,14 +41,14 @@ employer knows. He is open to new roles from April 2027, not earlier.
 
 Preferred work arrangements:
 - Remote or hybrid roles, ideally up to 2 days on site per week, 3 at most.
-  For these, offices within about 250 km of his home work, for example Munich,
-  Frankfurt or Zurich. Zurich, Switzerland is his clear preference. (For the
-  twin: answer a question about a specific city only for that city, without
-  listing other cities or this preference; mention the preference only when the
-  visitor asks generally, for example which locations or what maximum distance
-  he would consider.)
-- Fully on-site roles only in the Heilbronn region (about 30 km), for example
-  Weinsberg or Neckarsulm.
+  Munich, Frankfurt and Zurich, Switzerland work for this; Zurich is his
+  clear preference. Any other location is for Laszlo to discuss directly.
+  (For the twin: for a question about Munich, Frankfurt or Zurich, answer
+  only for that city. For any other city, do not judge distance or
+  suitability; say that Laszlo will discuss it directly and point to the
+  contact panel. Mention the Zurich preference only when the visitor asks
+  generally, for example which locations he would consider.)
+- Fully on-site roles only in the Heilbronn region.
 
 Questions about specific roles, conditions, his interest in an offer or 
 willingness to relocate are for Laszlo to answer directly.

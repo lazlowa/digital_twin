@@ -4,6 +4,11 @@
 
 None. The fix outside a TID (branch `fix-team-sizes`: team sizes, real CV, CV served at `/cv`) was concluded on 2026-11-13 and merged into main; the site is live at https://lazlowa.space.
 
+## Work locations in ME.md (completed, on main)
+
+- Developer instruction (2026-11-13), committed directly on main: `data/ME.md` "Preferred work arrangements" names only Munich, Frankfurt and Zurich (Zurich preferred) for hybrid roles; any other location is for Laszlo to discuss, and the twin must not judge distance or suitability but point to the contact panel. The 250 km rule, "about 30 km" and the Heilbronn-region examples were removed. A distance lookup tool was discussed and dropped by the developer (major topics are discussed by Laszlo himself).
+- Verified: 49 tests pass. The twin's answers were not checked live (developer declined).
+
 ## Team-size and CV fix (completed, merged)
 
 - Developer facts (2026-11-13): he took over a computer vision team of 4 and grew it to about 15; he built an AI group of about 45 from scratch. The earlier "more than 30"/"30+" figures were wrong.
