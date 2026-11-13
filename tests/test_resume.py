@@ -1,4 +1,5 @@
 from datetime import date
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -14,6 +15,7 @@ SAMPLE = """## Identity
 - Name: Jane Doe
 - Role: Engineer
 - Tagline: I build things.
+- Description: Jane, an engineer.
 - Email: jane@example.com
 - GitHub: github.com/jane
 - Location: Berlin
@@ -55,7 +57,37 @@ def test_index_has_chat_widget() -> None:
 
 
 def test_static_files_are_served() -> None:
-    assert client.get("/static/style.css").status_code == 200
+    for name in ["style.css", "og.png", "favicon.svg", "favicon-32.png"]:
+        assert client.get(f"/static/{name}").status_code == 200
+    assert client.get("/static/apple-touch-icon.png").status_code == 200
+
+
+def test_index_has_description_and_link_preview_tags() -> None:
+    page = client.get("/").text
+    description = parse_resume(
+        (Path(__file__).parent.parent / "data" / "PROFILE.md").read_text(
+            encoding="utf-8"
+        )
+    ).description
+
+    assert description
+    assert f'<meta name="description" content="{description}">' in page
+    assert f'<meta property="og:description" content="{description}">' in page
+    assert '<meta property="og:url" content="https://lazlowa.space/">' in page
+    assert (
+        '<meta property="og:image" content="https://lazlowa.space/static/og.png">'
+        in page
+    )
+    assert '<meta name="twitter:card" content="summary_large_image">' in page
+
+
+def test_icons_on_all_pages() -> None:
+    for path in ("/", "/legal", "/privacy"):
+        page = client.get(path).text
+        assert '<link rel="icon" href="/static/favicon.svg"' in page
+        assert (
+            '<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">' in page
+        )
 
 
 def test_parse_resume_identity() -> None:
@@ -64,6 +96,7 @@ def test_parse_resume_identity() -> None:
     assert resume.name == "Jane Doe"
     assert resume.role == "Engineer"
     assert resume.tagline == "I build things."
+    assert resume.description == "Jane, an engineer."
     assert [(link.label, link.href) for link in resume.links] == [
         ("Email", "mailto:jane@example.com"),
         ("GitHub", "https://github.com/jane"),

@@ -50,6 +50,7 @@ class Resume:
     name: str
     role: str
     tagline: str
+    description: str
     profile_html: str
     links: list[Link]
     sections: list[Section]
@@ -81,6 +82,7 @@ def parse_resume(text: str) -> Resume:
         name=identity.pop("Name", ""),
         role=identity.pop("Role", ""),
         tagline=identity.pop("Tagline", ""),
+        description=identity.pop("Description", ""),
         profile_html=profile_html,
         links=[Link(label, value, _href(value)) for label, value in identity.items()],
         sections=sections,

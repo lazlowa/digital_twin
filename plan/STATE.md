@@ -2,7 +2,17 @@
 
 ## Current task
 
-None. TID-13 (Fixing Impressum) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+TID-14 (Content Fine-Tuning), branch `tid-14`, committed and pushed for a preview on developer instruction (the link preview can only be tested on production, because previews require a Vercel login). TID-13 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
+
+## TID-14 (in progress)
+
+- Developer decisions (2026-11-13): the § 18 MStV finding is dropped (removed from PLAN.md by the developer); Open Graph tags with a designed preview card (no announcement, the link goes into the LinkedIn profile); favicon as the "LA" monogram; meta description as an editable `Description:` field in `data/PROFILE.md`; provider pinned to Anthropic; generic supervisory-authority wording (Art. 77); Google DPF status checked.
+- Description: `data/PROFILE.md` Identity `Description:`; `app/resume.py` `Resume.description`; `templates/index.html` meta description and og:description use it.
+- Open Graph: og:type/url/title/description/image (+ width, height, alt) and `twitter:card` in `templates/index.html`; absolute URLs from the new `site_url` setting (`app/config.py`, default https://lazlowa.space). Card `static/og.png` (1200x630), rendered from an HTML card with headless Edge (source in the session scratchpad, not in the repo).
+- Icons: `static/favicon.svg` (gradient square, "LA"; SVG text falls back to Arial without Geist), `static/favicon-32.png`, `static/apple-touch-icon.png` (180 px, full-bleed), rendered with Geist and scaled with System.Drawing; linked via `templates/_icons.html` on all pages.
+- Provider: `OPENROUTER_PROVIDER` setting (default `anthropic`, empty allows any; `.env.example`); `app/chat.py` `_complete` sends `provider: {order: [..], allow_fallbacks: false}`. Live check: a career question returned a normal reply (HTTP 200) with the pinning.
+- `data/PRIVACY.md`: names Anthropic PBC, USA, as the only model provider; transfers: Vercel and Google on the DPF (Google LLC states DPF certification on its frameworks page), OpenRouter and Anthropic on SCCs (Anthropic's privacy policy names SCCs; its DPF status is disputed between sources, so it is not claimed); supervisory authority per Art. 77.
+- Tests: description parsing, meta/OG tags, icons on all pages, static images served, provider pinning. 46 pass, ruff clean.
 
 ## TID-13 (completed, merged)
 
@@ -157,7 +167,7 @@ None. TID-13 (Fixing Impressum) was concluded by the developer on 2026-11-13, me
 - PLAN.md wording fixed by the agent with one-time developer permission (2026-11-12): TID-1 lists the `EMAIL_*` settings, TID-2 describes `data/PROFILE.md` and the bento page, and TID-4 says SMTP (Gmail) and "both tools". The quoted instruction block was not changed.
 - Deferred: font alternatives (Plus Jakarta Sans, Manrope, Space Grotesk, Sora) were offered and not taken up. The `data/PROFILE.md` copy was reviewed and adjusted by the developer in TID-10.
 - Mobile layout after TID-10 is not verified in a real browser.
-- Privacy notice facts to confirm: OpenRouter input/output logging is off and Vercel runtime log retention ("about one hour" in the text) (developer); Google's DPF certification and the providers OpenRouter routes the model to (not verified).
+- Privacy notice facts to confirm by the developer: OpenRouter input/output logging is off, and Vercel runtime log retention ("about one hour" in the text).
 
 ## Blockers
 

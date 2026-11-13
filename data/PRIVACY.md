@@ -28,12 +28,12 @@ after at most 24 hours. Legal basis: Art. 6 (1) (f) GDPR.
 ## The chat
 
 When you use the digital twin, your messages and the earlier messages of the
-conversation are sent to OpenRouter, Inc., USA, which passes them to a provider
-of the AI model to generate the reply. This site does not store the
-conversation; your browser keeps it only until you reload the page. According to
-OpenRouter, message content is not stored by default; it does keep technical
-metadata such as token counts. The model provider processes the messages under
-its own terms. Please do not share sensitive personal information in the chat.
+conversation are sent to OpenRouter, Inc., USA, which passes them only to
+Anthropic PBC, USA, the provider of the AI model, to generate the reply. This
+site does not store the conversation; your browser keeps it only until you
+reload the page. According to OpenRouter, message content is not stored by
+default; it does keep technical metadata such as token counts. Anthropic
+processes the messages under its own terms. Please do not share sensitive personal information in the chat.
 Legal basis: Art. 6 (1) (f) GDPR, a legitimate interest in offering the chat you
 choose to use.
 
@@ -52,8 +52,8 @@ from its own server.
 
 ## Transfers outside the EU
 
-Vercel, OpenRouter, Google and the model provider may process data in the USA.
-Vercel and Google rely on the EU-U.S. Data Privacy Framework; OpenRouter relies
+Vercel, OpenRouter, Google and Anthropic may process data in the USA. Vercel and
+Google rely on the EU-U.S. Data Privacy Framework; OpenRouter and Anthropic rely
 on the EU standard contractual clauses.
 
 ## Your rights
@@ -62,7 +62,8 @@ You have the right to access, rectification, erasure and restriction of
 processing, to data portability, and to object to processing based on legitimate
 interests (Art. 15 to 21 GDPR). To exercise them, email the address above. You
 also have the right to lodge a complaint with a data protection supervisory
-authority.
+authority, in particular in the EU member state where you live or work, or where
+you believe your data protection rights were infringed (Art. 77 GDPR).
 
 Using the chat is voluntary; the rest of the site works without it. There is no
 automated decision-making with legal effects.

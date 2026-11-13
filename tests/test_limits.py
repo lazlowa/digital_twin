@@ -77,6 +77,19 @@ def test_response_tokens_are_capped(fake: FakeClient) -> None:
     assert fake.requests[0]["max_tokens"] == settings.max_response_tokens
 
 
+def test_model_is_pinned_to_one_provider(
+    fake: FakeClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    client.post("/api/chat", json={"messages": [{"role": "user", "content": "Hi"}]})
+    assert fake.requests[0]["extra_body"] == {
+        "provider": {"order": ["anthropic"], "allow_fallbacks": False}
+    }
+
+    monkeypatch.setattr(settings, "openrouter_provider", "")
+    client.post("/api/chat", json={"messages": [{"role": "user", "content": "Hi"}]})
+    assert fake.requests[1]["extra_body"] == {}
+
+
 class Clock:
     def __init__(self) -> None:
         self.now = 1000.0

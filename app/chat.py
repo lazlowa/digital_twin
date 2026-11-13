@@ -120,12 +120,21 @@ async def chat(
 
 
 async def _complete(client: AsyncOpenAI, messages: list[dict]) -> AsyncIterator:
+    extra_body = {}
+    if settings.openrouter_provider:
+        # OpenRouter provider routing: no fallback to other providers, so the
+        # provider named in the privacy notice is the only one used.
+        extra_body["provider"] = {
+            "order": [settings.openrouter_provider],
+            "allow_fallbacks": False,
+        }
     return await client.chat.completions.create(
         model=settings.openrouter_model,
         messages=messages,
         tools=TOOLS,
         max_tokens=settings.max_response_tokens,
         stream=True,
+        extra_body=extra_body,
     )
 
 

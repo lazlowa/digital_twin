@@ -3,6 +3,7 @@
 - Name: Laszlo Anka
 - Role: Software & Systems Architect
 - Tagline: I build the data platforms other teams build on.
+- Description: Laszlo Anka, software and systems architect: data platforms, distributed computing, cloud and AI-assisted development. Ask his digital twin about his career and projects.
 - Location: Germany
 - Email: laszlo.anka@gmail.com
 - LinkedIn: linkedin.com/in/laszlo-anka

@@ -6,6 +6,8 @@ class Settings(BaseSettings):
 
     openrouter_api_key: str = ""
     openrouter_model: str = "anthropic/claude-haiku-5.5"
+    # Serve the model only through this OpenRouter provider; empty allows any.
+    openrouter_provider: str = "anthropic"
     email_smtp_server: str = "smtp.gmail.com"
     email_address: str = ""
     email_app_password: str = ""
@@ -23,6 +25,8 @@ class Settings(BaseSettings):
     vercel_env: str = ""
     vercel_git_commit_sha: str = ""
     repository_url: str = "https://github.com/lazlowa/digital_twin"
+    # Public address of the site, used for absolute URLs in link previews.
+    site_url: str = "https://lazlowa.space"
 
 
 settings = Settings()
