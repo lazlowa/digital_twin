@@ -27,7 +27,7 @@ progressing from algorithm development into technical leadership and engineering
 management.
 
 He has led two groups: he took over a computer vision team of 4 and grew it to
-about 15 people, and he built an AI group of about 45 people from scratch. He is
+about 15 people, and he built an AI group of 45+ people from scratch. He is
 also the creator and maintainer of pypz, an open-source Pipeline-as-Code framework that
 became a business-unit standard used across 100+ projects. He values honest human
 relationships and the craft of building things, and is equally comfortable owning
@@ -149,7 +149,7 @@ A progression of roles focused on data platforms and cloud-native infrastructure
 ### Robert Bosch Kft., Budapest, Hungary (09/2007 - 12/2018)
 
 - Section Manager, Artificial Intelligence (2016 - 2018): Built the AI group of
-  about 45 people from scratch, including recruitment; established research and infrastructure
+  45+ people from scratch, including recruitment; established research and infrastructure
   capabilities and partnerships with the global Bosch AI organization and Hungarian
   universities and institutes (ELTE, BME, MTA SZTAKI).
 - Section Manager, Computer Vision (2015 - 2018, concurrent): Took over a computer
@@ -180,7 +180,7 @@ system.
 - Developer enablement: Built a self-service development platform with automated,
   isolated Kubernetes environments per branch, shortening feature delivery from
   weeks to a few days through a fully traceable path from branch to production.
-- Organizational development: Established an AI group of about 45 experts from scratch,
+- Organizational development: Established an AI group of 45+ experts from scratch,
   building both the team and its research and engineering capabilities for frontier
   topics such as prediction and planning.
 

@@ -2,13 +2,15 @@
 
 ## Current task
 
-Fix outside a TID (developer instruction, branch `fix-team-sizes`, committed and pushed, not merged): team sizes in `data/ME.md`. TID-15 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
+Fix outside a TID (developer instruction, branch `fix-team-sizes`, committed and pushed, not merged): team sizes in `data/ME.md` and the real CV. TID-15 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
 
 ## Team-size fix (in progress)
 
 - Developer facts (2026-11-13): he took over a computer vision team of 4 and grew it to about 15; he built an AI group of about 45 from scratch. The earlier "more than 30"/"30+" figures were wrong.
 - `data/ME.md`: Executive Summary (two groups, 4 to about 15, and about 45 from scratch), Bosch Kft. section (AI group of about 45; CV team taken over at 4 and grown to about 15), Selected Contributions (AI group of about 45). `data/PROFILE.md` was already correct ("a computer vision team of 15 and an AI group of 45").
 - Verified: no "30+" left in `data/`; 49 tests pass; live (cap 0): the twin answers 4 to about 15 (taken over) and about 45 (from scratch).
+- Then (developer, to match the CV): the AI group is "45+" in all three places in `data/ME.md`. `data/PROFILE.md` still says "an AI group of 45" (not requested).
+- Real CV: the developer replaced `static/CV_v1.pdf` with `static/CV_v2.pdf` (two-page design version, reviewed against ME.md). `CV_DOWNLOAD_ENABLED=true` set in Vercel for Production and Preview and in the local `.env`; production shows the button after the next production deployment (merge into main).
 
 ## TID-15 (completed, merged)
 
@@ -206,4 +208,4 @@ None.
 
 ## Next action
 
-Wait for the developer to assign the next task. Developer to-dos: replace the placeholder CV (`static/CV_v2.pdf`, delete `CV_v1.pdf`) and set `CV_DOWNLOAD_ENABLED=true` in Vercel. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-15 are complete.
+Wait for the developer to merge `fix-team-sizes` into main (this brings the real CV and the button to production) or to assign the next task. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-15 are complete.
