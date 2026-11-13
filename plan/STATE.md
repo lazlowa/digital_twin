@@ -2,7 +2,13 @@
 
 ## Current task
 
-None. TID-15 (Add CV download link) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+Fix outside a TID (developer instruction, branch `fix-team-sizes`, committed and pushed, not merged): team sizes in `data/ME.md`. TID-15 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
+
+## Team-size fix (in progress)
+
+- Developer facts (2026-11-13): he took over a computer vision team of 4 and grew it to about 15; he built an AI group of about 45 from scratch. The earlier "more than 30"/"30+" figures were wrong.
+- `data/ME.md`: Executive Summary (two groups, 4 to about 15, and about 45 from scratch), Bosch Kft. section (AI group of about 45; CV team taken over at 4 and grown to about 15), Selected Contributions (AI group of about 45). `data/PROFILE.md` was already correct ("a computer vision team of 15 and an AI group of 45").
+- Verified: no "30+" left in `data/`; 49 tests pass; live (cap 0): the twin answers 4 to about 15 (taken over) and about 45 (from scratch).
 
 ## TID-15 (completed, merged)
 
@@ -27,8 +33,8 @@ None. TID-15 (Add CV download link) was concluded by the developer on 2026-11-13
 - Tests: description parsing, meta/OG tags, icons on all pages, static images served, provider pinning. 46 pass, ruff clean.
 - After the first preview push (commit 402e379; the follow-up below is committed and pushed for a second preview, including PLAN.md, on developer instruction): the developer rewrote the Profile text and changed the tagline to "Architect by role, builder at heart."; `static/og.png` re-rendered with the new tagline. Availability (developer: the employer knows, he is in his exit period): `Availability: Open to new roles from April 2027` in `data/PROFILE.md` Identity, shown as a second hero pill with a green dot (`.pills`, `.eyebrow-available`); `Resume.availability`. `data/ME.md` states the availability after "Current focus". `TOOL_GUIDANCE` now allows sharing the documented availability but still not his interest in a role or his reaction. Live: "When is Laszlo available...?" and "Would Laszlo be interested in a lead architect role in Munich?" both gave April 2027 and left interest to Laszlo. `test_index_renders_profile_md` now reads the expected texts from PROFILE.md. 46 tests pass.
 - Acceptance criteria: the four findings in PLAN.md (Open Graph, favicon, meta description, privacy details) are fixed; the § 18 MStV finding was removed from PLAN.md by the developer.
-- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): model provider pinned to Anthropic (`OPENROUTER_PROVIDER`, no fallback); availability shown on the page and shared by the twin; from TID-12: legal texts as separate pages, external links in a new tab.
-- Open for the developer: the new Profile says "an AI group of 45", while `data/ME.md` says "30+" in several places; not changed. Cosmetic: when the model writes text, calls the tool and continues, the two text parts are joined without a space ("for him.You're").
+- Decisions recorded in `plan/DECISIONS.md` (2026-11-13): provider pinned to Anthropic, availability on the page and in the twin; from TID-12: legal texts as separate pages, external links in a new tab.
+- Cosmetic, open: when the model writes text, calls the tool and continues, the two text parts are joined without a space ("for him.You're").
 
 ## TID-13 (completed, merged)
 
@@ -46,7 +52,7 @@ None. TID-15 (Add CV download link) was concluded by the developer on 2026-11-13
 - Step 4 implementation: `data/LEGAL.md` (name, Germany, email; no address per decision) and `data/PRIVACY.md` (retention of forwarded emails: one month, developer decision). `app/resume.py` `load_page()` renders a data file; `app/main.py` routes `/legal` and `/privacy` with `templates/page.html`; shared partials `templates/_footer.html` (copyright, Legal notice, Privacy, build link) and `templates/_badge.html` (Preview badge). The chat note ends with a "Privacy" link. Styles: `.footer-links`, `.legal` in `static/style.css`. Tests in `tests/test_resume.py`: 42 pass, ruff clean. Screenshots of both pages at 1280 px look right.
 - New tabs (developer approved the agent's recommendation): links to other sites open in a new tab (`target="_blank" rel="noopener"`): contact card links (`templates/index.html`), the footer build link (`templates/_footer.html`), and http(s) links rendered from the data Markdown files (`link_open` rule in `app/resume.py`). The chat note's Privacy link opens a new tab so the in-memory conversation is kept. Footer Legal notice/Privacy, the Back link and mailto links stay in the same tab. Chat reply links already opened in a new tab (`static/chat.js`). Final: 43 tests pass, ruff clean.
 - Step 5: English is sufficient because the whole site is in English (step 3 sources); relying on browser translation is not needed.
-- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): legal texts as separate pages `/legal` and `/privacy` linked from the footer (placement option chosen by the agent, accepted by the developer); external links open in a new tab.
+- Decisions recorded later in `plan/DECISIONS.md` (2026-11-13, TID-12): legal texts as separate pages, external links in a new tab.
 - Facts in the privacy text: Vercel says it is EU-U.S. DPF certified (its changelog and docs; one third-party blog disagreed); OpenRouter's policy relies on SCCs; Google is assumed DPF certified (not looked up in this session). Not verified: which providers OpenRouter routes `anthropic/claude-haiku-5.5` to (the text says "a provider of the AI model"). The developer agreed to check that OpenRouter input/output logging is off and the Vercel runtime log retention ("about one hour" in the text).
 
 ## TID-11 (completed, merged)

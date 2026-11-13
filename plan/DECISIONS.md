@@ -223,3 +223,35 @@ Decision: The page offers a "Download CV" button next to "Ask my digital twin" t
 Rationale: The developer wants recruiters to get a PDF, but not before the CV is final; one switch keeps the page and the twin consistent.
 
 Approved by developer: yes
+
+## 2026-11-13 | TID-12 | Legal texts as separate pages
+
+Decision: The legal notice and the privacy notice are separate pages, `/legal` and `/privacy`, rendered from `data/LEGAL.md` and `data/PRIVACY.md` and linked from the footer; the chat privacy note also links to `/privacy`.
+
+Rationale: Separate pages are the safest of the placement options: easy to recognise, reachable within two clicks, always available, and simple to maintain as Markdown files. A dialog or expandable section was not covered by the sources found.
+
+Approved by developer: yes
+
+## 2026-11-13 | TID-12 | External links open in a new tab
+
+Decision: Links to other sites (contact card, Highlights and other Markdown content, the footer build link, chat replies) open in a new tab. The chat note's "Privacy" link also opens a new tab, so the in-memory conversation is kept. Internal footer links, the Back link and email links stay in the same tab.
+
+Rationale: Visitors keep the page and any chat in progress; internal navigation behaves as usual.
+
+Approved by developer: yes
+
+## 2026-11-13 | TID-14 | Model provider pinned to Anthropic
+
+Decision: OpenRouter requests use provider routing with `order: ["anthropic"]` and `allow_fallbacks: false`, configurable as `OPENROUTER_PROVIDER` (default `anthropic`, empty allows any provider). The privacy notice names Anthropic PBC as the only model provider.
+
+Rationale: The privacy notice can name the exact recipient of chat messages. Trade-off accepted: if Anthropic is unavailable, the chat shows its error message instead of switching providers.
+
+Approved by developer: yes
+
+## 2026-11-13 | TID-14 | Availability shown on the page and shared by the twin
+
+Decision: The hero shows an availability pill from the `Availability:` field in `data/PROFILE.md` ("Open to new roles from April 2027"). `data/ME.md` states the availability and preferred work arrangements, and the twin may share them; it still does not speak for Laszlo about his interest in a specific role, conditions or relocation. A question about a specific city is answered only for that city.
+
+Rationale: The employer knows about the departure, and recruiters should see availability at once.
+
+Approved by developer: yes
