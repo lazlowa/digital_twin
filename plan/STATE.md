@@ -12,7 +12,7 @@ None. The fix outside a TID (branch `fix-team-sizes`: team sizes, real CV, CV se
 - Then (developer, to match the CV): the AI group is "45+" in all three places in `data/ME.md`. `data/PROFILE.md` still says "an AI group of 45" (not requested).
 - Real CV: the developer replaced `static/CV_v1.pdf` with `static/CV_v2.pdf` (two-page design version, reviewed against ME.md). `CV_DOWNLOAD_ENABLED=true` set in Vercel for Production and Preview and in the local `.env`; production shows the button after the next production deployment (merge into main). Committed and pushed as `5d0bc10`; preview verified (button, same PDF bytes).
 - Download name fix (developer approved, `858da22`): Vercel serves `/static/` itself with `content-disposition: inline; filename="CV_v2.pdf"`, which overrides the `download` attribute. The CV moved to `data/CV_v2.pdf` (`find_cv()` now looks in `data/`) and is served by the new `/cv` route in `app/main.py` with `attachment; filename="ANKA_Laszlo_CV.pdf"` and `Cache-Control: no-cache`; 404 while the flag is off or no CV exists, so the file is no longer reachable while hidden. Button in `templates/index.html` links `/cv`. Test and README updated. Verified locally: 49 tests pass, ruff clean, uvicorn `/cv` returns the attachment header, `/static/CV_v2.pdf` returns 404. Preview `858da22` verified the same (headers, PDF bytes, 404); the saved name in a real browser was left to the developer.
-- Not recorded in DECISIONS.md (needs developer approval to record): the CV lives in `data/` and is served by `/cv`, superseding the `static/CV_v<N>.pdf` location of the TID-15 entry.
+- Decision recorded in `plan/DECISIONS.md` (2026-11-13, post-TID-15): CV served by the app at `/cv`, superseding the TID-15 location.
 
 ## TID-15 (completed, merged)
 

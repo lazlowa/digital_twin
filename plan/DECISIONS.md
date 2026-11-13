@@ -255,3 +255,11 @@ Decision: The hero shows an availability pill from the `Availability:` field in 
 Rationale: The employer knows about the departure, and recruiters should see availability at once.
 
 Approved by developer: yes
+
+## 2026-11-13 | Fix (post-TID-15) | CV served by the app at /cv
+
+Decision: The CV lives in `data/CV_v<N>.pdf` (highest number wins; the developer deletes the old version) and is served by the `/cv` route with `Content-Disposition: attachment; filename="ANKA_Laszlo_CV.pdf"` and `Cache-Control: no-cache`. `/cv` returns 404 while `CV_DOWNLOAD_ENABLED` is false or no CV exists. Supersedes the `static/CV_v<N>.pdf` location and the `download` attribute naming in the 2026-11-13 TID-15 entry "CV download behind a flag"; the flag itself is unchanged.
+
+Rationale: Vercel serves `static/` itself with `Content-Disposition: inline; filename="CV_v2.pdf"`, which overrides the `download` attribute, so visitors saved the file as `CV_v2.pdf`. Serving through the app sets the name reliably and also hides the file while the flag is off. Trade-off accepted: downloads run through the function instead of the CDN.
+
+Approved by developer: yes
