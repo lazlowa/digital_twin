@@ -183,20 +183,22 @@ def test_find_cv_picks_highest_version(tmp_path: Path) -> None:
 
 
 def test_cv_download_button(monkeypatch: pytest.MonkeyPatch) -> None:
-    cv = find_cv()
-    assert cv is not None
+    assert find_cv() is not None
     monkeypatch.setattr(settings, "cv_download_enabled", False)
     assert "Download CV" not in client.get("/").text
+    assert client.get("/cv").status_code == 404
 
     monkeypatch.setattr(settings, "cv_download_enabled", True)
     page = client.get("/").text
-    assert (
-        f'<a class="cta-secondary" href="/static/{cv}" '
-        'download="ANKA_Laszlo_CV.pdf">Download CV</a>'
-    ) in page
-    response = client.get(f"/static/{cv}")
+    assert '<a class="cta-secondary" href="/cv" download>Download CV</a>' in page
+    response = client.get("/cv")
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/pdf"
+    assert response.headers["content-disposition"] == (
+        'attachment; filename="ANKA_Laszlo_CV.pdf"'
+    )
+    assert response.content.startswith(b"%PDF")
 
     monkeypatch.setattr("app.main.find_cv", lambda: None)
     assert "Download CV" not in client.get("/").text
+    assert client.get("/cv").status_code == 404

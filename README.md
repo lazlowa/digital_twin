@@ -9,11 +9,10 @@ Content: `data/PROFILE.md` is the short profile shown on the page (each `##`
 section becomes a tile). `data/ME.md` is the full knowledge base for the LLM.
 `data/LEGAL.md` and `data/PRIVACY.md` are served at `/legal` and `/privacy`.
 
-CV: with `CV_DOWNLOAD_ENABLED=true` the "Download CV" button links the highest
-`static/CV_v<N>.pdf`, and the twin mentions it. To update,
-add the new file with the next number (for example `CV_v2.pdf`) and delete the
-old one; the new URL avoids cached copies. Visitors save it as
-`ANKA_Laszlo_CV.pdf`.
+CV: with `CV_DOWNLOAD_ENABLED=true` the "Download CV" button serves the highest
+`data/CV_v<N>.pdf` at `/cv` as `ANKA_Laszlo_CV.pdf`, and the twin mentions it.
+With the flag off, `/cv` returns 404. To update, add the new file with the next
+number (for example `CV_v3.pdf`) and delete the old one.
 
 ## Setup
 

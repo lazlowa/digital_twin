@@ -12,7 +12,6 @@ from markdown_it import MarkdownIt
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 PROFILE_PATH = DATA_DIR / "PROFILE.md"
-STATIC_DIR = DATA_DIR.parent / "static"
 
 IDENTITY_SECTION = "Identity"
 PROFILE_SECTION = "Profile"
@@ -62,8 +61,8 @@ def load_resume(path: Path = PROFILE_PATH) -> Resume:
     return parse_resume(path.read_text(encoding="utf-8"))
 
 
-def find_cv(directory: Path = STATIC_DIR) -> str | None:
-    """Returns the newest CV_v<N>.pdf; a new version number gets a new URL."""
+def find_cv(directory: Path = DATA_DIR) -> str | None:
+    """Returns the name of the newest data/CV_v<N>.pdf."""
     versions = {
         int(path.stem.removeprefix("CV_v")): path.name
         for path in directory.glob("CV_v*.pdf")
