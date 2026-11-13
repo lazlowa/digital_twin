@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} - {{ resume.name }}</title>
+  <meta name="color-scheme" content="dark">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  {% include "_badge.html" %}
+  <main class="legal">
+    <a class="back" href="/">&larr; Back to {{ resume.name }}</a>
+    <article class="tile">{{ html | safe }}</article>
+  </main>
+  {% include "_footer.html" %}
+</body>
+</html>

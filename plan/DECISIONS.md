@@ -191,3 +191,19 @@ Decision: The chat panel note reads "If the twin can't answer a question, this c
 Rationale: Visitors should learn why their conversation is forwarded, not only that it is.
 
 Approved by developer: yes
+
+## 2026-11-13 | TID-12 | Legal notice (Impressum) without postal address for now
+
+Decision: The site gets a legal notice (Impressum) in English with name and email. The postal address is left out for now for privacy reasons and will be added later; a c/o address or a mail-box service are the options considered instead of the home address.
+
+Rationale: The research in TID-12 step 3 found that § 18 Abs. 1 MStV very likely applies, because the site is not exclusively personal, and it requires a serviceable postal address. The developer accepts that the notice is incomplete until the address is added. English is acceptable because the whole site is in English.
+
+Approved by developer: yes
+
+## 2026-11-13 | TID-12 | Full privacy notice in English
+
+Decision: The site gets a full GDPR privacy notice in English covering the controller, hosting and server logs, in-memory abuse limits, chat processing through OpenRouter and the model provider, email forwarding of unanswered questions, transfers outside the EU, retention and visitor rights. The chat panel note stays as the short first layer. Placement of both texts is decided in step 4.
+
+Rationale: The research in TID-12 step 3 found that the GDPR household exemption does not cover a public professional website, and the chat note alone does not contain the information Art. 13 GDPR requires.
+
+Approved by developer: yes

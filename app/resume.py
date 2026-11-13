@@ -10,7 +10,8 @@ from pathlib import Path
 
 from markdown_it import MarkdownIt
 
-PROFILE_PATH = Path(__file__).resolve().parent.parent / "data" / "PROFILE.md"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+PROFILE_PATH = DATA_DIR / "PROFILE.md"
 
 IDENTITY_SECTION = "Identity"
 PROFILE_SECTION = "Profile"
@@ -44,6 +45,11 @@ class Resume:
 
 def load_resume(path: Path = PROFILE_PATH) -> Resume:
     return parse_resume(path.read_text(encoding="utf-8"))
+
+
+def load_page(filename: str) -> str:
+    """Renders a Markdown file from data/ (legal notice, privacy) to HTML."""
+    return _markdown.render((DATA_DIR / filename).read_text(encoding="utf-8"))
 
 
 def parse_resume(text: str) -> Resume:

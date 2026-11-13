@@ -1,9 +1,11 @@
+from datetime import date
+
 import pytest
 from fastapi.testclient import TestClient
 
 from app.config import settings
 from app.main import app
-from app.resume import parse_resume
+from app.resume import load_page, parse_resume
 
 client = TestClient(app)
 
@@ -79,16 +81,44 @@ def test_parse_resume_sections() -> None:
     assert "<strong>2020 - now</strong>" in resume.sections[0].html
 
 
-def test_badges_follow_vercel_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    assert 'class="badges"' not in client.get("/").text
+def test_footer_shows_copyright_and_build_link(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    page = client.get("/").text
+    assert 'class="site-footer"' in page
+    assert f"&copy; {date.today().year} Laszlo Anka" in page
+    assert 'class="build"' not in page
 
-    monkeypatch.setattr(settings, "vercel_env", "production")
     monkeypatch.setattr(settings, "vercel_git_commit_sha", "abc1234def5678")
     page = client.get("/").text
-    assert '<span class="badge" title="Build commit">abc1234</span>' in page
-    assert "badge-preview" not in page
+    assert (
+        'href="https://github.com/lazlowa/digital_twin/commit/abc1234def5678"' in page
+    )
+    assert "Build abc1234</a>" in page
+
+
+def test_footer_and_chat_note_link_to_legal_pages() -> None:
+    page = client.get("/").text
+
+    assert '<a href="/legal">Legal notice</a>' in page
+    assert page.count('<a href="/privacy">Privacy</a>') == 2
+
+
+@pytest.mark.parametrize(
+    ("path", "filename"), [("/legal", "LEGAL.md"), ("/privacy", "PRIVACY.md")]
+)
+def test_legal_pages_render_data_files(path: str, filename: str) -> None:
+    response = client.get(path)
+
+    assert response.status_code == 200
+    assert load_page(filename) in response.text
+    assert 'class="site-footer"' in response.text
+
+
+def test_preview_badge_only_on_preview(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "vercel_env", "production")
+    assert "badge-preview" not in client.get("/").text
 
     monkeypatch.setattr(settings, "vercel_env", "preview")
-    page = client.get("/").text
-    assert '<span class="badge badge-preview">Preview</span>' in page
-    assert '<span class="badge" title="Build commit">abc1234</span>' in page
+    for path in ("/", "/legal"):
+        assert '<div class="badge-preview">Preview</div>' in client.get(path).text

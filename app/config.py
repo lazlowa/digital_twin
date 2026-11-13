@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     # Set by Vercel: production, preview or development.
     vercel_env: str = ""
     vercel_git_commit_sha: str = ""
+    repository_url: str = "https://github.com/lazlowa/digital_twin"
 
 
 settings = Settings()

@@ -106,7 +106,7 @@ p:last-child {
   gap: 1rem;
   max-width: 76rem;
   margin: 0 auto;
-  padding: clamp(1rem, 3vw, 2.5rem) 1rem 7rem;
+  padding: clamp(1rem, 3vw, 2.5rem) 1rem 2rem;
 }
 
 .tile {
@@ -769,29 +769,91 @@ p:last-child {
   }
 }
 
-.badges {
+.badge-preview {
   position: fixed;
   top: 0.75rem;
   left: 0.75rem;
   z-index: 10;
-  display: flex;
-  gap: 0.4rem;
-  pointer-events: none;
-}
-
-.badge {
   padding: 0.2rem 0.6rem;
-  border: 1px solid var(--line-strong);
+  border: 1px solid #f5b942;
   border-radius: 999px;
-  background: rgba(6, 9, 20, 0.85);
-  color: var(--muted);
+  background: rgba(60, 40, 5, 0.85);
+  color: #f5b942;
   font: 600 0.7rem/1.4 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  pointer-events: none;
 }
 
-.badge-preview {
-  border-color: #f5b942;
-  background: rgba(60, 40, 5, 0.85);
-  color: #f5b942;
+/* Footer: bottom padding keeps it clear of the chat launcher */
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0 1rem 6rem;
+  color: var(--faint);
+  font-size: 0.8rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.footer-links a {
+  color: var(--faint);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--muted);
+}
+
+/* Legal notice and privacy pages */
+
+.legal {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2.5rem) 1rem 2rem;
+}
+
+.legal .back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.legal .tile {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.legal h1 {
+  margin: 0 0 1rem;
+  color: var(--text);
+  font-size: 1.6rem;
+}
+
+.legal h2 {
+  margin: 1.75rem 0 0.5rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.site-footer .build {
+  font-family: var(--mono);
 }
