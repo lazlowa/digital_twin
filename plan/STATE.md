@@ -2,7 +2,14 @@
 
 ## Current task
 
-None. TID-12 (Impressum) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+None. TID-13 (Fixing Impressum) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin.
+
+## TID-13 (completed, merged)
+
+- Developer decisions (2026-11-13): the address goes into the legal notice and the privacy notice; the Autorenglück power of post and service (Post- und Zustellungsvollmacht) is signed; usual process (local check, push for a preview on instruction, decision entry superseding the TID-12 "without postal address" decision at the end).
+- `data/LEGAL.md` and `data/PRIVACY.md` ("Who is responsible"): "Laszlo Anka, c/o Autorenglück #56130, Albert-Einstein-Straße 47, 02977 Hoyerswerda, Germany", one line each (Markdown hard breaks).
+- Verified: 43 tests pass; `/legal` and `/privacy` return 200 and render the address with correct umlauts.
+- Decision recorded in `plan/DECISIONS.md` (2026-11-13, TID-13), superseding the TID-12 "without postal address" decision. `plan/PLAN.md` (developer's TID-13 text) committed on developer instruction.
 
 ## TID-12 (completed, merged)
 
@@ -150,7 +157,6 @@ None. TID-12 (Impressum) was concluded by the developer on 2026-11-13, merged in
 - PLAN.md wording fixed by the agent with one-time developer permission (2026-11-12): TID-1 lists the `EMAIL_*` settings, TID-2 describes `data/PROFILE.md` and the bento page, and TID-4 says SMTP (Gmail) and "both tools". The quoted instruction block was not changed.
 - Deferred: font alternatives (Plus Jakarta Sans, Manrope, Space Grotesk, Sora) were offered and not taken up. The `data/PROFILE.md` copy was reviewed and adjusted by the developer in TID-10.
 - Mobile layout after TID-10 is not verified in a real browser.
-- Legal notice: postal address still to be added (c/o address or mail-box service as options); until then it is incomplete.
 - Privacy notice facts to confirm: OpenRouter input/output logging is off and Vercel runtime log retention ("about one hour" in the text) (developer); Google's DPF certification and the providers OpenRouter routes the model to (not verified).
 
 ## Blockers
@@ -168,4 +174,4 @@ None.
 
 ## Next action
 
-Wait for the developer to assign the next task. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-12 are complete.
+Wait for the developer to assign the next task. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-13 are complete.

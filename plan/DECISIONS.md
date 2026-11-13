@@ -207,3 +207,11 @@ Decision: The site gets a full GDPR privacy notice in English covering the contr
 Rationale: The research in TID-12 step 3 found that the GDPR household exemption does not cover a public professional website, and the chat note alone does not contain the information Art. 13 GDPR requires.
 
 Approved by developer: yes
+
+## 2026-11-13 | TID-13 | Postal address via address service
+
+Decision: Supersedes "Legal notice (Impressum) without postal address for now" (2026-11-13, TID-12). The legal notice and the privacy notice ("Who is responsible") give the postal address "Laszlo Anka, c/o Autorenglück #56130, Albert-Einstein-Straße 47, 02977 Hoyerswerda, Germany", an address service with a signed power of post and service (Post- und Zustellungsvollmacht).
+
+Rationale: Completes the legal notice with a serviceable address, as § 18 Abs. 1 MStV requires, while keeping the home address private. The provider's terms grant the power of service and state that court and lawyer mail is forwarded without delay.
+
+Approved by developer: yes

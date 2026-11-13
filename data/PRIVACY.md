@@ -2,8 +2,13 @@
 
 ## Who is responsible
 
-Laszlo Anka, Germany. Email:
-[laszlo.anka@gmail.com](mailto:laszlo.anka@gmail.com)
+Laszlo Anka\
+c/o Autorenglück #56130\
+Albert-Einstein-Straße 47\
+02977 Hoyerswerda\
+Germany
+
+Email: [laszlo.anka@gmail.com](mailto:laszlo.anka@gmail.com)
 
 ## Hosting and server logs
 

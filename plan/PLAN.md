@@ -245,3 +245,20 @@ Build id notice shall link back to the specific commit.
 - Amber preview badge shall remain intact
 - Privacy note and impressum texts shall be maintained in their own file in `data` folder
 - The side shall load the note texts at startup
+
+
+## TID-13 Fixing Impressum
+
+### Description
+
+Impressum and privacy notice did not have any address. This task is about fixing it. The address is:
+
+Laszlo Anka
+c/o Autorenglück #56130
+Albert-Einstein-Straße 47
+02977 Hoyerswerda
+
+### Acceptance Criteria
+
+- Address is now in impressum and in privacy notice
+
