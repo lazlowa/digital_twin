@@ -2,9 +2,9 @@
 
 ## Current task
 
-TID-14 (Content Fine-Tuning), branch `tid-14`, committed and pushed for a preview on developer instruction (the link preview can only be tested on production, because previews require a Vercel login). TID-13 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
+None. TID-14 (Content Fine-Tuning) was concluded by the developer on 2026-11-13, merged into `main` and pushed. The site is live at https://lazlowa.space and the repository is public at https://github.com/lazlowa/digital_twin. TID-13 was concluded on 2026-11-13 and merged; the site is live at https://lazlowa.space.
 
-## TID-14 (in progress)
+## TID-14 (completed, merged)
 
 - Developer decisions (2026-11-13): the § 18 MStV finding is dropped (removed from PLAN.md by the developer); Open Graph tags with a designed preview card (no announcement, the link goes into the LinkedIn profile); favicon as the "LA" monogram; meta description as an editable `Description:` field in `data/PROFILE.md`; provider pinned to Anthropic; generic supervisory-authority wording (Art. 77); Google DPF status checked.
 - Description: `data/PROFILE.md` Identity `Description:`; `app/resume.py` `Resume.description`; `templates/index.html` meta description and og:description use it.
@@ -14,6 +14,8 @@ TID-14 (Content Fine-Tuning), branch `tid-14`, committed and pushed for a previe
 - `data/PRIVACY.md`: names Anthropic PBC, USA, as the only model provider; transfers: Vercel and Google on the DPF (Google LLC states DPF certification on its frameworks page), OpenRouter and Anthropic on SCCs (Anthropic's privacy policy names SCCs; its DPF status is disputed between sources, so it is not claimed); supervisory authority per Art. 77.
 - Tests: description parsing, meta/OG tags, icons on all pages, static images served, provider pinning. 46 pass, ruff clean.
 - After the first preview push (commit 402e379; the follow-up below is committed and pushed for a second preview, including PLAN.md, on developer instruction): the developer rewrote the Profile text and changed the tagline to "Architect by role, builder at heart."; `static/og.png` re-rendered with the new tagline. Availability (developer: the employer knows, he is in his exit period): `Availability: Open to new roles from April 2027` in `data/PROFILE.md` Identity, shown as a second hero pill with a green dot (`.pills`, `.eyebrow-available`); `Resume.availability`. `data/ME.md` states the availability after "Current focus". `TOOL_GUIDANCE` now allows sharing the documented availability but still not his interest in a role or his reaction. Live: "When is Laszlo available...?" and "Would Laszlo be interested in a lead architect role in Munich?" both gave April 2027 and left interest to Laszlo. `test_index_renders_profile_md` now reads the expected texts from PROFILE.md. 46 tests pass.
+- Acceptance criteria: the four findings in PLAN.md (Open Graph, favicon, meta description, privacy details) are fixed; the § 18 MStV finding was removed from PLAN.md by the developer.
+- Not recorded in `plan/DECISIONS.md` (needs developer clarification whether to record): model provider pinned to Anthropic (`OPENROUTER_PROVIDER`, no fallback); availability shown on the page and shared by the twin; from TID-12: legal texts as separate pages, external links in a new tab.
 - Open for the developer: the new Profile says "an AI group of 45", while `data/ME.md` says "30+" in several places; not changed. Cosmetic: when the model writes text, calls the tool and continues, the two text parts are joined without a space ("for him.You're").
 
 ## TID-13 (completed, merged)
@@ -186,4 +188,4 @@ None.
 
 ## Next action
 
-Wait for the developer to assign the next task. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-13 are complete.
+Next: TID-15 (CV download link) on a new branch `tid-15` when the developer instructs. Agreed so far: versioned file `static/CV_v<N>.pdf`, the page links the highest version found (button hidden if none), download name `ANKA_Laszlo_CV.pdf`, secondary button next to "Ask my digital twin", a placeholder PDF may be merged, ME.md mentions the download. TID-9 is on hold (TID-11 removed its contact half, so it may be reduced or closed). TID-1 to TID-8 and TID-10 to TID-14 are complete.
